@@ -33,21 +33,19 @@ import { resetSubsite } from 'volto-subsites';
 
 import {
   Pagination,
-  SearchSections,
-  SearchTopics,
-  SearchCTs,
+  // SearchSections,
+  // SearchTopics,
+  // SearchCTs,
   Icon,
   RemoveBodyClass,
   SearchResultItem,
 } from 'design-comuni-plone-theme/components/ItaliaTheme';
 import { TextInput, SelectInput } from 'design-comuni-plone-theme/components';
-import {
-  getSearchFilters,
-  getSearchResults,
-} from 'design-comuni-plone-theme/actions';
+import { getRerSearch } from 'volto-rer-search/actions';
 import { useDebouncedEffect } from 'design-comuni-plone-theme/helpers';
 
 import SearchUtils from 'volto-rer-search/components/Search/utils';
+import { Facets } from 'volto-rer-search/components/Search';
 import config from '@plone/volto/registry';
 
 const { getSearchParamsURL, parseExtraParams } = SearchUtils;
@@ -61,12 +59,10 @@ const messages = defineMessages({
     id: 'sort_on_date',
     defaultMessage: 'Data (prima i più recenti)',
   },
-
   sort_on_title: {
     id: 'sort_on_title',
     defaultMessage: 'Alfabeticamente',
   },
-
   search: {
     id: 'search',
     defaultMessage: 'Cerca',
@@ -78,39 +74,6 @@ const messages = defineMessages({
   searchSite: {
     id: 'Search site',
     defaultMessage: 'Cerca nel sito',
-  },
-  sections: {
-    id: 'sections',
-    defaultMessage: 'Sezioni',
-  },
-  topics: {
-    id: 'topics',
-    defaultMessage: 'Argomenti',
-  },
-  options: {
-    id: 'options',
-    defaultMessage: 'Opzioni',
-  },
-  removeOption: {
-    id: 'removeOption',
-    defaultMessage: 'Rimuovi opzione',
-  },
-  optionActiveContentLabel: {
-    id: 'optionActiveContentLabel',
-    defaultMessage: 'Contenuti attivi',
-  },
-  optionActiveContentInfo: {
-    id: 'optionActiveContentInfo',
-    defaultMessage:
-      'Verranno esclusi dalla ricerca i contenuti archiviati e non più validi come gli eventi terminati o i bandi scaduti.',
-  },
-  optionDateStartButton: {
-    id: 'optionDateStartButton',
-    defaultMessage: 'Dal',
-  },
-  optionDateEndButton: {
-    id: 'optionDateEndButton',
-    defaultMessage: 'Al',
   },
   orderBy: {
     id: 'order_by',
@@ -124,10 +87,6 @@ const messages = defineMessages({
     id: 'filtersCollapse',
     defaultMessage: 'Filtri',
   },
-  section_undefined: {
-    id: 'section_undefined',
-    defaultMessage: 'altro',
-  },
   attenzione: { id: 'Attenzione!', defaultMessage: 'Attenzione!' },
   errors_occured: {
     id: 'Sono occorsi degli errori',
@@ -137,21 +96,9 @@ const messages = defineMessages({
     id: 'Nessun risultato ottenuto',
     defaultMessage: 'Nessun risultato ottenuto',
   },
-  portal_types: {
-    id: 'search_portal_types',
-    defaultMessage: 'Tipologia',
-  },
-  advFilters: {
-    id: 'search_adv_filters',
-    defaultMessage: 'Filtri avanzati',
-  },
   skipToSearchResults: {
     id: 'search_skip_to_search_results',
     defaultMessage: 'Vai ai risultati di ricerca',
-  },
-  active_filters: {
-    id: 'active_filters',
-    defaultMessage: '{filterNumber} filtri attivati',
   },
 });
 
@@ -175,7 +122,7 @@ const Search = () => {
   const location = useLocation();
   const history = useHistory();
   const subsite = useSelector((state) => state.subsite?.data);
-  const searchResults = useSelector((state) => state.searchResults);
+  const searchResults = useSelector((state) => state.rer_search);
 
   const [searchableText, setSearchableText] = useState(
     qs.parse(location.search)?.SearchableText ?? '',
@@ -192,6 +139,7 @@ const Search = () => {
       ? qs.parse(location.search).b_start / config.settings.defaultPageSize + 1
       : 1,
   );
+  const [filters, setFilters] = useState({});
 
   const sortOnOptions = [
     {
@@ -212,17 +160,6 @@ const Search = () => {
     window.scrollTo(0, 0);
     setCurrentPage(activePage?.children ?? 1);
   };
-
-  const searchFilters = useSelector((state) => state.searchFilters.result);
-  useEffect(() => {
-    if (!searchFilters || Object.keys(searchFilters).length === 0)
-      dispatch(getSearchFilters());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchFilters, subsite]);
 
   useEffect(() => {
     if (
@@ -273,11 +210,6 @@ const Search = () => {
     // dispatch(getSearchResults(queryString));
   };
 
-  // let activeSections = values(sections).reduce((acc, sec) => {
-  //   return acc + values(sec.items).filter((i) => i.value).length;
-  // }, 0);
-  // let activeTopics = values(topics).filter((t) => t.value).length;
-  // let activePortalTypes = values(portalTypes).filter((ct) => ct.value).length;
   return (
     <>
       <Helmet title={intl.formatMessage(messages.searchResults)} />
@@ -301,7 +233,7 @@ const Search = () => {
                       setSearchableText(value);
                     }}
                     size="lg"
-                    prepend={
+                    append={
                       <Button
                         icon
                         tag="button"
@@ -373,200 +305,7 @@ const Search = () => {
                 className="d-lg-block d-xl-block"
                 id="categoryCollapse"
               >
-                {/* {Object.keys(sections)?.length > 0 && (
-                  <div className="pt-4 pt-lg-0">
-                    <h6 className="text-uppercase">
-                      {intl.formatMessage(messages.sections)}
-
-                      <span
-                        className={cx('badge bg-secondary ms-3', {
-                          'visually-hidden': activeSections === 0,
-                        })}
-                        aria-live="polite"
-                        aria-label={intl.formatMessage(
-                          messages.active_filters,
-                          {
-                            filterNumber: activeSections,
-                          },
-                        )}
-                      >
-                        {activeSections}
-                      </span>
-                    </h6>
-                    <div className="mt-4">
-                      <SearchSections
-                        sections={sections}
-                        setSections={setSections}
-                        toggleGroups={true}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {Object.keys(topics)?.length > 0 && (
-                  <div
-                    className={
-                      Object.keys(sections)?.length > 0
-                        ? 'pt-4 pt-lg-5'
-                        : 'pt-4 pt-lg-0'
-                    }
-                  >
-                    <h6 className="text-uppercase">
-                      {intl.formatMessage(messages.topics)}
-
-                      <span
-                        className={cx('badge bg-secondary ms-3', {
-                          'visually-hidden': activeTopics === 0,
-                        })}
-                        aria-live="polite"
-                        aria-label={intl.formatMessage(
-                          messages.active_filters,
-                          {
-                            filterNumber: activeTopics,
-                          },
-                        )}
-                      >
-                        {activeTopics}
-                      </span>
-                    </h6>
-                    <div className="form-check mt-4">
-                      <SearchTopics
-                        topics={topics}
-                        setTopics={setTopics}
-                        collapsable={true}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {Object.keys(portalTypes).length > 0 && (
-                  <div className="pt-5">
-                    <Button
-                      color="secondary"
-                      outline
-                      icon
-                      size="small"
-                      onClick={() => setAdvFiltersOpen(!advFiltersOpen)}
-                      className="justify-content-start w-100 ps-2"
-                      aria-expanded={advFiltersOpen}
-                    >
-                      <Icon
-                        icon={advFiltersOpen ? 'it-minus' : 'it-plus'}
-                        padding
-                      />
-                      {intl.formatMessage(messages.advFilters)}
-                    </Button>
-                    <Collapse isOpen={advFiltersOpen} id="advFilters">
-                      <div className="p-3 shadow-sm bg-white">
-                        <h6 className="text-uppercase">
-                          {intl.formatMessage(messages.portal_types)}
-
-                          <span
-                            className={cx('badge bg-secondary ms-3', {
-                              'visually-hidden': activePortalTypes === 0,
-                            })}
-                            aria-live="polite"
-                            aria-label={intl.formatMessage(
-                              messages.active_filters,
-                              {
-                                filterNumber: activePortalTypes,
-                              },
-                            )}
-                          >
-                            {activePortalTypes}
-                          </span>
-                        </h6>
-                        <div className="form-checck mt-4">
-                          <SearchCTs
-                            portalTypes={portalTypes}
-                            setPortalTypes={setPortalTypes}
-                            collapsable
-                          />
-                        </div>
-                      </div>
-                    </Collapse>
-                  </div>
-                )}
-
-                {values(options).filter((o) => o !== null && o !== undefined)
-                  .length > 0 && (
-                  <div className="pt-4 pt-lg-5">
-                    <h6 className="text-uppercase">
-                      {intl.formatMessage(messages.options)}
-                    </h6>
-                    {options.activeContent !== undefined && (
-                      <div className="form-check mt-4">
-                        <Toggle
-                          label={intl.formatMessage(
-                            messages.optionActiveContentLabel,
-                          )}
-                          id="options-active-content"
-                          checked={options.activeContent}
-                          aria-controls="search-results-region"
-                          onChange={(e) => {
-                            const checked = e.currentTarget?.checked ?? false;
-                            setOptions((opts) => ({
-                              ...opts,
-                              activeContent: checked,
-                            }));
-                          }}
-                        />
-                        <p className="small">
-                          {intl.formatMessage(messages.optionActiveContentInfo)}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                <div className="form-check mt-4">
-                  {options?.dateStart && (
-                    <div
-                      role="presentation"
-                      className="chip chip-lg selected"
-                      onClick={() =>
-                        setOptions((opts) => ({ ...opts, dateStart: null }))
-                      }
-                    >
-                      <span className="chip-label">
-                        {`${intl.formatMessage(
-                          messages.optionDateStartButton,
-                        )} ${moment(options.dateStart)
-                          .locale(intl.locale)
-                          .format('LL')}`}
-                      </span>
-                      <button type="button">
-                        <Icon color="" icon="it-close" padding={false} />
-                        <span className="visually-hidden">
-                          {intl.formatMessage(messages.removeOption)}
-                        </span>
-                      </button>
-                    </div>
-                  )}
-                  {options?.dateEnd && (
-                    <div
-                      role="presentation"
-                      className="chip chip-lg selected"
-                      onClick={() =>
-                        setOptions((opts) => ({ ...opts, dateEnd: null }))
-                      }
-                    >
-                      <span className="chip-label">
-                        {`${intl.formatMessage(
-                          messages.optionDateEndButton,
-                        )} ${moment(options.dateEnd)
-                          .locale(intl.locale)
-                          .format('LL')}`}
-                      </span>
-                      <button type="button">
-                        <Icon color="" icon="it-close" padding={false} />
-                        <span className="visually-hidden">
-                          {intl.formatMessage(messages.removeOption)}
-                        </span>
-                      </button>
-                    </div>
-                  )}
-                </div> */}
+                <Facets filters={filters} setFilters={setFilters} />
               </Collapse>
             </aside>
 
@@ -646,7 +385,7 @@ const Search = () => {
                 ) : (
                   !searchResults?.hasError &&
                   !isEmpty(searchResults?.result) &&
-                  searchResults.result?.items.length === 0 && (
+                  searchResults.result?.items?.length === 0 && (
                     <p>{intl.formatMessage(messages.no_results)}</p>
                   )
                 )}

@@ -5,12 +5,9 @@ import {
   AvailableIndexesWidget,
 } from 'volto-rer-search/components';
 
-import { rerSearch, getRerSearchFilters } from 'volto-rer-search/actions';
+import { rerSearch } from 'volto-rer-search/actions';
 
-import {
-  rerSearchReducer,
-  rerSearchFiltersReducer,
-} from 'volto-rer-search/reducers';
+import { rerSearchReducer } from 'volto-rer-search/reducers';
 
 const applyConfig = (config) => {
   config.settings['volto-rer-search'] = {
@@ -44,10 +41,9 @@ const applyConfig = (config) => {
   config.addonReducers = {
     ...config.addonReducers,
     rer_search: rerSearchReducer,
-    rer_search_filters: rerSearchFiltersReducer,
   };
   return config;
 };
 
-export { rerSearch, getRerSearchFilters };
+export { rerSearch };
 export default applyConfig;
