@@ -5,6 +5,7 @@ import { Icon, Grid, Menu, Form, Button, Segment } from 'semantic-ui-react';
 import { getVocabulary } from '@plone/volto/actions';
 import { INDEXES_VOCABULARY } from 'volto-rer-search/helpers/constants';
 import IndexConfiguration from './IndexConfiguration';
+import { usePreventClick } from 'volto-rer-search/helpers';
 import './available-indexes-widget.css';
 
 const messages = defineMessages({
@@ -46,9 +47,8 @@ const messages = defineMessages({
   },
 });
 const defaultItem = {
-  title: 'Nuovo indice',
-  index: null,
   label: { it: '', en: '' },
+  index: null,
 };
 const AvailableIndexesWidget = ({
   value,
@@ -60,6 +60,7 @@ const AvailableIndexesWidget = ({
 }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
+  usePreventClick('.available-indexes-widget .ui.vertical.menu');
   const [items, setItems] = useState(JSON.parse(value) ?? [defaultItem]);
   const [activeItem, setActiveItem] = useState(0);
 
@@ -152,69 +153,61 @@ const AvailableIndexesWidget = ({
                             messages.index_selection,
                           )}
                         >
-                          {items?.map((item, idx) => (
-                            <Menu.Item
-                              key={`index-item-${idx}`}
-                              name={item.title}
-                              active={activeItem === idx}
-                              onClick={() => setActiveItem(idx)}
-                              aria-controls={'index-config-content'}
-                              as="button"
-                              aria-expanded={activeItem === idx}
-                              aria-label={
-                                intl.formatMessage(messages.index) +
-                                ' ' +
-                                (idx + 1) +
-                                ' ' +
-                                (item.label?.it ??
-                                  intl.formatMessage(messages.no_title))
-                              }
-                            >
-                              <Button.Group
-                                vertical
-                                className="move-buttons"
-                                key={`index-item-${idx}-buttons`}
-                                id={`index-item-${idx}-buttons`}
-                                name={item.title}
+                          {items?.map((item, idx) => {
+                            const itemTitle =
+                              intl.formatMessage(messages.index) +
+                              ' ' +
+                              (idx + 1) +
+                              ' - ' +
+                              (item.label?.it?.length > 0
+                                ? item.label?.it
+                                : intl.formatMessage(messages.no_title));
+                            return (
+                              <Menu.Item
+                                key={`index-item-${idx}`}
+                                name={itemTitle}
                                 active={activeItem === idx}
                                 onClick={() => setActiveItem(idx)}
-                                aria-label={
-                                  intl.formatMessage(messages.index) +
-                                  ' ' +
-                                  (idx + 1) +
-                                  ' ' +
-                                  (item.label?.it ??
-                                    intl.formatMessage(messages.no_title))
-                                }
+                                aria-controls={'index-config-content'}
+                                as="button"
+                                aria-expanded={activeItem === idx}
+                                aria-label={itemTitle}
                               >
-                                <Button
-                                  disabled={idx === 0}
-                                  size="tiny"
-                                  icon={<Icon name="arrow left" />}
-                                  title={intl.formatMessage(
-                                    messages.moveItemUp,
-                                  )}
-                                  onClick={(e) => moveItem(e, idx, 'up')}
-                                />
-                                <Button
-                                  disabled={idx === items.length - 1}
-                                  size="tiny"
-                                  icon={<Icon name="arrow right" />}
-                                  title={intl.formatMessage(
-                                    messages.moveItemDown,
-                                  )}
-                                  onClick={(e) =>
-                                    moveItem(e, activeFooter, idx, 'down')
-                                  }
-                                />
-                              </Button.Group>
-                              <span>
-                                {intl.formatMessage(messages.index)} {idx + 1} -{' '}
-                                {item.label?.it ??
-                                  intl.formatMessage(messages.no_title)}
-                              </span>
-                            </Menu.Item>
-                          ))}
+                                <Button.Group
+                                  vertical
+                                  className="move-buttons"
+                                  key={`index-item-${idx}-buttons`}
+                                  id={`index-item-${idx}-buttons`}
+                                  name={item.title}
+                                  active={activeItem === idx}
+                                  onClick={() => setActiveItem(idx)}
+                                  aria-label={itemTitle}
+                                >
+                                  <Button
+                                    disabled={idx === 0}
+                                    size="tiny"
+                                    icon={<Icon name="arrow left" />}
+                                    title={intl.formatMessage(
+                                      messages.moveItemUp,
+                                    )}
+                                    onClick={(e) => moveItem(e, idx, 'up')}
+                                  />
+                                  <Button
+                                    disabled={idx === items.length - 1}
+                                    size="tiny"
+                                    icon={<Icon name="arrow right" />}
+                                    title={intl.formatMessage(
+                                      messages.moveItemDown,
+                                    )}
+                                    onClick={(e) =>
+                                      moveItem(e, activeFooter, idx, 'down')
+                                    }
+                                  />
+                                </Button.Group>
+                                <span>{itemTitle}</span>
+                              </Menu.Item>
+                            );
+                          })}
                           <Menu.Item
                             as={'button'}
                             name={intl.formatMessage(messages.addItem)}
@@ -226,15 +219,14 @@ const AvailableIndexesWidget = ({
                         </Menu>
                       </Grid.Column>
                       <Grid.Column stretched width={8}>
-                        {activeItem > -1 && activeItem < items?.length ? (
-                          <div
-                            id="index-config-content"
-                            role="region"
-                            aria-label={intl.formatMessage(
-                              messages.index_content,
-                            )}
-                            key={'item-config' + activeItem}
-                          >
+                        <div
+                          id="index-config-content"
+                          role="region"
+                          aria-label={intl.formatMessage(
+                            messages.index_content,
+                          )}
+                        >
+                          {items.length && items[activeItem] ? (
                             <IndexConfiguration
                               key={'index-configuration' + activeItem}
                               index={activeItem}
@@ -249,12 +241,12 @@ const AvailableIndexesWidget = ({
                               indexes={indexes}
                               key={'index-config' + activeItem}
                             />
-                          </div>
-                        ) : (
-                          <span>
-                            {intl.formatMessage(messages.noActiveIndexes)}
-                          </span>
-                        )}
+                          ) : (
+                            <span>
+                              {intl.formatMessage(messages.noActiveIndexes)}
+                            </span>
+                          )}
+                        </div>
                       </Grid.Column>
                     </Grid>
                   ) : (

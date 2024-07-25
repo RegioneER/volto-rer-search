@@ -8,6 +8,8 @@ import {
   ADVANCED_FILTERS_VOCABULARY,
 } from 'volto-rer-search/helpers/constants';
 
+import { usePreventClick } from 'volto-rer-search/helpers';
+
 import GroupConfiguration from './GroupConfiguration';
 import './types-grouping-widget.css';
 
@@ -49,8 +51,8 @@ const messages = defineMessages({
     defaultMessage: 'Nessun gruppo selezionato.',
   },
 });
+
 const defaultItem = {
-  title: 'Nuovo gruppo',
   label: { it: '', en: '' },
   content_types: [],
 };
@@ -67,6 +69,7 @@ const TypesGroupingWidget = ({
   const dispatch = useDispatch();
   const [groups, setGroups] = useState(JSON.parse(value) ?? [defaultItem]); //ToDo: usare value
   const [activeItem, setActiveItem] = useState(0);
+  usePreventClick('.types-grouping-widget .ui.vertical.menu');
 
   const content_types = useSelector(
     (state) =>
@@ -135,7 +138,7 @@ const TypesGroupingWidget = ({
         getVocabulary({
           vocabNameOrURL: ADVANCED_FILTERS_VOCABULARY,
         }),
-      ); //
+      );
     }
   }, []);
   return (
@@ -173,69 +176,61 @@ const TypesGroupingWidget = ({
                             messages.group_selection,
                           )}
                         >
-                          {groups?.map((item, idx) => (
-                            <Menu.Item
-                              key={`group-item-${idx}`}
-                              name={item.title}
-                              active={activeItem === idx}
-                              onClick={() => setActiveItem(idx)}
-                              aria-controls={'group-config-content'}
-                              as="button"
-                              aria-expanded={activeItem === idx}
-                              aria-label={
-                                intl.formatMessage(messages.group) +
-                                ' ' +
-                                (idx + 1) +
-                                ' ' +
-                                (item.label?.it ??
-                                  intl.formatMessage(messages.no_title))
-                              }
-                            >
-                              <Button.Group
-                                vertical
-                                className="move-buttons"
-                                key={`group-item-${idx}-buttons`}
-                                id={`group-item-${idx}-buttons`}
-                                name={item.title}
+                          {groups?.map((item, idx) => {
+                            const itemTitle =
+                              intl.formatMessage(messages.group) +
+                              ' ' +
+                              (idx + 1) +
+                              ' - ' +
+                              (item.label?.it?.length > 0
+                                ? item.label.it
+                                : intl.formatMessage(messages.no_title));
+                            return (
+                              <Menu.Item
+                                key={`group-item-${idx}`}
+                                name={itemTitle}
                                 active={activeItem === idx}
                                 onClick={() => setActiveItem(idx)}
-                                aria-label={
-                                  intl.formatMessage(messages.group) +
-                                  ' ' +
-                                  (idx + 1) +
-                                  ' ' +
-                                  (item.label?.it ??
-                                    intl.formatMessage(messages.no_title))
-                                }
+                                aria-controls={'group-config-content'}
+                                as="button"
+                                aria-expanded={activeItem === idx}
+                                aria-label={itemTitle}
                               >
-                                <Button
-                                  disabled={idx === 0}
-                                  size="tiny"
-                                  icon={<Icon name="arrow left" />}
-                                  title={intl.formatMessage(
-                                    messages.moveItemUp,
-                                  )}
-                                  onClick={(e) => moveItem(e, idx, 'up')}
-                                />
-                                <Button
-                                  disabled={idx === groups.length - 1}
-                                  size="tiny"
-                                  icon={<Icon name="arrow right" />}
-                                  title={intl.formatMessage(
-                                    messages.moveItemDown,
-                                  )}
-                                  onClick={(e) =>
-                                    moveItem(e, activeFooter, idx, 'down')
-                                  }
-                                />
-                              </Button.Group>
-                              <span>
-                                {intl.formatMessage(messages.group)} {idx + 1} -{' '}
-                                {item.label?.it ??
-                                  intl.formatMessage(messages.no_title)}
-                              </span>
-                            </Menu.Item>
-                          ))}
+                                <Button.Group
+                                  vertical
+                                  className="move-buttons"
+                                  key={`group-item-${idx}-buttons`}
+                                  id={`group-item-${idx}-buttons`}
+                                  name={item.title}
+                                  active={activeItem === idx}
+                                  onClick={() => setActiveItem(idx)}
+                                  aria-label={itemTitle}
+                                >
+                                  <Button
+                                    disabled={idx === 0}
+                                    size="tiny"
+                                    icon={<Icon name="arrow left" />}
+                                    title={intl.formatMessage(
+                                      messages.moveItemUp,
+                                    )}
+                                    onClick={(e) => moveItem(e, idx, 'up')}
+                                  />
+                                  <Button
+                                    disabled={idx === groups.length - 1}
+                                    size="tiny"
+                                    icon={<Icon name="arrow right" />}
+                                    title={intl.formatMessage(
+                                      messages.moveItemDown,
+                                    )}
+                                    onClick={(e) =>
+                                      moveItem(e, activeFooter, idx, 'down')
+                                    }
+                                  />
+                                </Button.Group>
+                                <span>{itemTitle}</span>
+                              </Menu.Item>
+                            );
+                          })}
                           <Menu.Item
                             as={'button'}
                             name={intl.formatMessage(messages.addItem)}
@@ -247,14 +242,14 @@ const TypesGroupingWidget = ({
                         </Menu>
                       </Grid.Column>
                       <Grid.Column stretched width={8}>
-                        {groups.length ? (
-                          <div
-                            id="group-config-content"
-                            role="region"
-                            aria-label={intl.formatMessage(
-                              messages.group_content,
-                            )}
-                          >
+                        <div
+                          id="group-config-content"
+                          role="region"
+                          aria-label={intl.formatMessage(
+                            messages.group_content,
+                          )}
+                        >
+                          {groups.length && groups[activeItem] ? (
                             <GroupConfiguration
                               index={activeItem}
                               item={groups[activeItem]}
@@ -268,12 +263,12 @@ const TypesGroupingWidget = ({
                               content_types={content_types}
                               advanced_filters={advanced_filters}
                             />
-                          </div>
-                        ) : (
-                          <span>
-                            {intl.formatMessage(messages.noActiveGroups)}
-                          </span>
-                        )}
+                          ) : (
+                            <span>
+                              {intl.formatMessage(messages.noActiveGroups)}
+                            </span>
+                          )}
+                        </div>
                       </Grid.Column>
                     </Grid>
                   ) : (

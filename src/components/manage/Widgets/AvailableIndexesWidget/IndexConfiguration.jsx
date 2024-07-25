@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Form as UIForm, Grid, Button } from 'semantic-ui-react';
 import { MultilingualWidget } from 'volto-multilingual-widget';
 import { TextWidget, ArrayWidget, SelectWidget } from '@plone/volto/components';
-
+import { usePreventClick } from 'volto-rer-search/helpers';
 import config from '@plone/volto/registry';
 
 const messages = defineMessages({
@@ -34,38 +34,7 @@ const TextMultilingualWidget = MultilingualWidget(TextWidget, '');
 const IndexConfiguration = ({ item, index, onChange, deleteItem, indexes }) => {
   const intl = useIntl();
 
-  const preventClick = (e) => {
-    e.preventDefault();
-  };
-
-  const preventEnter = (e) => {
-    if (e.code === 'Enter') {
-      preventClick(e);
-    }
-  };
-
-  useEffect(() => {
-    document
-      .querySelector('.index-configuration')
-      .addEventListener('click', preventClick);
-
-    document.querySelectorAll('.index-configuration input').forEach((item) => {
-      item.addEventListener('keypress', preventEnter);
-    });
-
-    return () => {
-      const form = document.querySelector('.index-configuration');
-      const input = document.querySelectorAll('.index-configuration input');
-      if (form) {
-        form.removeEventListener('click', preventClick);
-      }
-      if (input?.length > 0) {
-        input.forEach((item) => {
-          item.removeEventListener('keypress', preventEnter);
-        });
-      }
-    };
-  }, []);
+  usePreventClick('.index-configuration');
 
   const onChangeFormData = (id, value) => {
     onChange({ ...item, [id]: value });

@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Form as UIForm, Grid, Button } from 'semantic-ui-react';
 import { MultilingualWidget } from 'volto-multilingual-widget';
 import { TextWidget, ArrayWidget, SelectWidget } from '@plone/volto/components';
-
+import { usePreventClick } from 'volto-rer-search/helpers';
 import config from '@plone/volto/registry';
 
 const messages = defineMessages({
@@ -57,47 +57,12 @@ const GroupConfiguration = ({
   advanced_filters,
 }) => {
   const intl = useIntl();
-
-  const preventClick = (e) => {
-    e.preventDefault();
-  };
-
-  const preventEnter = (e) => {
-    if (e.code === 'Enter') {
-      preventClick(e);
-    }
-  };
-
-  useEffect(() => {
-    document
-      .querySelector('.group-configuration')
-      .addEventListener('click', preventClick);
-
-    document.querySelectorAll('.group-configuration input').forEach((item) => {
-      item.addEventListener('keypress', preventEnter);
-    });
-
-    return () => {
-      const form = document.querySelector('.group-configuration');
-      const input = document.querySelectorAll('.group-configuration input');
-      if (form) {
-        form.removeEventListener('click', preventClick);
-      }
-      if (input?.length > 0) {
-        input.forEach((item) => {
-          item.removeEventListener('keypress', preventEnter);
-        });
-      }
-    };
-  }, []);
+  usePreventClick('.group-configuration');
 
   const onChangeFormData = (id, value) => {
     onChange({ ...item, [id]: value });
   };
 
-  {
-    console.log('item.label', item.label);
-  }
   return (
     <div className="group-configuration">
       <TextMultilingualWidget
@@ -112,10 +77,10 @@ const GroupConfiguration = ({
       />
 
       <ArrayWidget
-        id="content_types"
+        id="portal_type"
         title={intl.formatMessage(messages.content_types)}
         description={intl.formatMessage(messages.content_types_description)}
-        value={item.content_types}
+        value={item.portal_type}
         choices={content_types}
         onChange={(n, v) => {
           onChangeFormData(n, v);
