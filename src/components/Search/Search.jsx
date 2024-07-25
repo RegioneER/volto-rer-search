@@ -137,8 +137,8 @@ const messages = defineMessages({
     id: 'Nessun risultato ottenuto',
     defaultMessage: 'Nessun risultato ottenuto',
   },
-  content_types: {
-    id: 'search_content_types',
+  portal_types: {
+    id: 'search_portal_types',
     defaultMessage: 'Tipologia',
   },
   advFilters: {
@@ -459,7 +459,7 @@ const Search = () => {
                     <Collapse isOpen={advFiltersOpen} id="advFilters">
                       <div className="p-3 shadow-sm bg-white">
                         <h6 className="text-uppercase">
-                          {intl.formatMessage(messages.content_types)}
+                          {intl.formatMessage(messages.portal_types)}
 
                           <span
                             className={cx('badge bg-secondary ms-3', {

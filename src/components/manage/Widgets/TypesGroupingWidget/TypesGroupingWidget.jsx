@@ -54,7 +54,7 @@ const messages = defineMessages({
 
 const defaultItem = {
   label: { it: '', en: '' },
-  content_types: [],
+  portal_type: [],
 };
 
 const TypesGroupingWidget = ({
@@ -71,7 +71,7 @@ const TypesGroupingWidget = ({
   const [activeItem, setActiveItem] = useState(0);
   usePreventClick('.types-grouping-widget .ui.vertical.menu');
 
-  const content_types = useSelector(
+  const portal_types = useSelector(
     (state) =>
       state.vocabularies[GROUPING_TYPES_VOCABULARY] &&
       state.vocabularies[GROUPING_TYPES_VOCABULARY].items
@@ -126,14 +126,14 @@ const TypesGroupingWidget = ({
   };
 
   useEffect(() => {
-    if ((content_types ?? [])?.length == 0) {
+    if ((portal_types ?? [])?.length === 0) {
       dispatch(
         getVocabulary({
           vocabNameOrURL: GROUPING_TYPES_VOCABULARY,
         }),
       ); //
     }
-    if ((advanced_filters ?? [])?.length == 0) {
+    if ((advanced_filters ?? [])?.length === 0) {
       dispatch(
         getVocabulary({
           vocabNameOrURL: ADVANCED_FILTERS_VOCABULARY,
@@ -260,7 +260,7 @@ const TypesGroupingWidget = ({
                                 handleChange(new_groups);
                               }}
                               deleteItem={(e) => removeItem(e, activeItem)}
-                              content_types={content_types}
+                              portal_types={portal_types}
                               advanced_filters={advanced_filters}
                             />
                           ) : (

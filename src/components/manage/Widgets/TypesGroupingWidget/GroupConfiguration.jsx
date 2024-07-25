@@ -19,12 +19,12 @@ const messages = defineMessages({
     id: 'types-grouping-widget_field_label_discription',
     defaultMessage: "Inserisci un'etichetta per questo gruppo.",
   },
-  content_types: {
-    id: 'types-grouping-widget_field_content_types',
+  portal_types: {
+    id: 'types-grouping-widget_field_portal_types',
     defaultMessage: 'Tipi di contenuto',
   },
-  content_types_description: {
-    id: 'widget_field_content_types_discription',
+  portal_types_description: {
+    id: 'widget_field_portal_types_discription',
     defaultMessage:
       'Seleziona quali tipi di contenuto mostrare in questo gruppo.',
   },
@@ -53,7 +53,7 @@ const GroupConfiguration = ({
   item,
   onChange,
   deleteItem,
-  content_types,
+  portal_types,
   advanced_filters,
 }) => {
   const intl = useIntl();
@@ -78,10 +78,10 @@ const GroupConfiguration = ({
 
       <ArrayWidget
         id="portal_type"
-        title={intl.formatMessage(messages.content_types)}
-        description={intl.formatMessage(messages.content_types_description)}
+        title={intl.formatMessage(messages.portal_types)}
+        description={intl.formatMessage(messages.portal_types_description)}
         value={item.portal_type}
-        choices={content_types}
+        choices={portal_types}
         onChange={(n, v) => {
           onChangeFormData(n, v);
         }}
