@@ -47,7 +47,7 @@ const messages = defineMessages({
   },
 });
 
-const TextMultilingualWidget = MultilingualWidget(TextWidget, {});
+const TextMultilingualWidget = MultilingualWidget(TextWidget, '');
 
 const GroupConfiguration = ({
   item,
@@ -95,6 +95,9 @@ const GroupConfiguration = ({
     onChange({ ...item, [id]: value });
   };
 
+  {
+    console.log('item.label', item.label);
+  }
   return (
     <div className="group-configuration">
       <TextMultilingualWidget
@@ -103,6 +106,7 @@ const GroupConfiguration = ({
         description={intl.formatMessage(messages.label_description)}
         value={item.label}
         onChange={(f, v) => {
+          console.log('onchange', v);
           onChangeFormData(f, JSON.parse(v));
         }}
       />

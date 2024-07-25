@@ -29,7 +29,7 @@ const messages = defineMessages({
   },
 });
 
-const TextMultilingualWidget = MultilingualWidget(TextWidget, {});
+const TextMultilingualWidget = MultilingualWidget(TextWidget, '');
 
 const IndexConfiguration = ({ item, index, onChange, deleteItem, indexes }) => {
   const intl = useIntl();
