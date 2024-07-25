@@ -5,6 +5,13 @@ import {
   AvailableIndexesWidget,
 } from 'volto-rer-search/components';
 
+import { rerSearch, getRerSearchFilters } from 'volto-rer-search/actions';
+
+import {
+  rerSearchReducer,
+  rerSearchFiltersReducer,
+} from 'volto-rer-search/reducers';
+
 const applyConfig = (config) => {
   config.settings['volto-rer-search'] = {
     ...(config.settings['volto-rer-search'] ?? {}),
@@ -34,11 +41,13 @@ const applyConfig = (config) => {
     available_indexes: AvailableIndexesWidget,
   };
 
-  // config.widgets.id.site_title_translated = MultilingualWidget(
-  //   (props) => <TextareaWidget {...props} wrapped={false} />,
-  //   [],
-  // );
+  config.addonReducers = {
+    ...config.addonReducers,
+    rer_search: rerSearchReducer,
+    rer_search_filters: rerSearchFiltersReducer,
+  };
   return config;
 };
 
+export { rerSearch, getRerSearchFilters };
 export default applyConfig;
