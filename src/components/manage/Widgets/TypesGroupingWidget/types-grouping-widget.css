@@ -1,0 +1,74 @@
+.types-grouping-widget .ui.menu.types-grouping-menu .item,
+.cms-ui .types-grouping-widget .ui.menu.types-grouping-menu .item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  margin: 0px 0px 0px 1px !important;
+  width: 100%;
+  cursor: pointer;
+}
+.types-grouping-widget .ui.menu.types-grouping-menu .item:hover,
+.cms-ui .types-grouping-widget .ui.menu.types-grouping-menu .item:hover {
+  background-color: #fafafa !important;
+}
+
+.types-grouping-widget .ui.menu.types-grouping-menu .item span,
+.cms-ui .types-grouping-widget .ui.menu.types-grouping-menu .item span {
+  margin-left: 0.5rem;
+  text-align: start;
+}
+
+.types-grouping-widget .ui.menu.types-grouping-menu .item button.ui.button,
+.cms-ui
+  .types-grouping-widget
+  .ui.menu.types-grouping-menu
+  .item
+  button.ui.button {
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.types-grouping-widget
+  .ui.menu.types-grouping-menu
+  .item
+  button.ui.button
+  i.icon,
+.cms-ui
+  .types-grouping-widget
+  .ui.menu.types-grouping-menu
+  .item
+  button.ui.button
+  i.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(90deg);
+}
+
+.types-grouping-widget .ui.menu.types-grouping-menu .item span,
+.cms-ui .types-grouping-widget .ui.menu.types-grouping-menu .item span {
+  display: inline-block;
+  min-width: 3rem;
+  flex: 1;
+}
+
+.types-grouping-widget .ui.menu.types-grouping-menu .item span,
+.cms-ui .types-grouping-widget .ui.menu.types-grouping-menu .item span {
+  padding-left: 0.5rem;
+}
+
+.types-grouping-widget .delete-item-wrapper,
+.cms-ui .types-grouping-widget .delete-item-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+button.delete-item,
+.cms-ui button.delete-item {
+  display: inline-block;
+  flex-grow: 0;
+  align-self: self-start;
+}
