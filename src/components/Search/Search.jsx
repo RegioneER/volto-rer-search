@@ -24,8 +24,9 @@ import {
   Toggle,
   Alert,
   Spinner,
+  Skiplink,
+  SkiplinkItem,
 } from 'design-react-kit';
-import { Skiplink, SkiplinkItem } from 'design-react-kit';
 import { useLocation, useHistory } from 'react-router-dom';
 
 import { Helmet, flattenToAppURL } from '@plone/volto/helpers';
@@ -33,19 +34,16 @@ import { resetSubsite } from 'volto-subsites';
 
 import {
   Pagination,
-  // SearchSections,
-  // SearchTopics,
-  // SearchCTs,
   Icon,
   RemoveBodyClass,
   SearchResultItem,
 } from 'design-comuni-plone-theme/components/ItaliaTheme';
-import { TextInput, SelectInput } from 'design-comuni-plone-theme/components';
-import { getRerSearch } from 'volto-rer-search/actions';
+import { TextInput } from 'design-comuni-plone-theme/components';
+import { rerSearch } from 'volto-rer-search/actions';
 import { useDebouncedEffect } from 'design-comuni-plone-theme/helpers';
 
 import SearchUtils from 'volto-rer-search/components/Search/utils';
-import { Facets } from 'volto-rer-search/components/Search';
+import { Facets, OrderingWidget } from 'volto-rer-search/components/Search';
 import config from '@plone/volto/registry';
 
 const { getSearchParamsURL, parseExtraParams } = SearchUtils;
@@ -94,7 +92,7 @@ const messages = defineMessages({
   },
   no_results: {
     id: 'Nessun risultato ottenuto',
-    defaultMessage: 'Nessun risultato ottenuto',
+    defaultMessage: 'Nessun risultato soddisfa la tua ricerca',
   },
   skipToSearchResults: {
     id: 'search_skip_to_search_results',
@@ -141,21 +139,6 @@ const Search = () => {
   );
   const [filters, setFilters] = useState({});
 
-  const sortOnOptions = [
-    {
-      value: SORT_BY_RELEVANCE,
-      label: intl.formatMessage(messages.sort_on_relevance),
-    },
-    {
-      value: SORT_BY_DATE,
-      label: intl.formatMessage(messages.sort_on_date),
-    },
-    {
-      value: SORT_BY_SORTABLETITLE,
-      label: intl.formatMessage(messages.sort_on_title),
-    },
-  ];
-
   const handleQueryPaginationChange = (_e, { activePage }) => {
     window.scrollTo(0, 0);
     setCurrentPage(activePage?.children ?? 1);
@@ -179,35 +162,33 @@ const Search = () => {
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     600,
-    [dispatch, searchableText, sortOn, currentPage, extraParams],
+    [dispatch, searchableText, sortOn, currentPage, extraParams, filters],
   );
 
   const doSearch = () => {
-    // const queryString = getSearchParamsURL(
-    //   searchableText?.length > 0 ? `${searchableText}*` : '',
-    //   SORTING_OPTIONS[sortOn] ?? {},
-    //   currentPage,
-    //   customPath,
-    //   subsite,
-    //   intl.locale,
-    //   true,
-    //   extraParams,
-    // );
-    // !isEmpty(searchResults.result) &&
-    //   history.push(
-    //     getSearchParamsURL(
-    //       searchableText,
-    //       {},
-    //       SORTING_OPTIONS[sortOn] ?? {},
-    //       currentPage,
-    //       customPath,
-    //       subsite,
-    //       intl.locale,
-    //       false,
-    //       extraParams,
-    //     ),
-    //   );
-    // dispatch(getSearchResults(queryString));
+    const par = {
+      searchableText: searchableText?.length > 0 ? `${searchableText}*` : '',
+      sortOn: SORTING_OPTIONS[sortOn],
+      currentPage,
+      customPath,
+      subsite,
+      currentLang: intl.locale,
+      filters,
+      extraParams,
+    };
+    const queryString = getSearchParamsURL({
+      getObject: true,
+      ...par,
+    });
+
+    !isEmpty(searchResults.result) &&
+      history.push(
+        getSearchParamsURL({
+          ...par,
+          searchableText,
+        }),
+      );
+    dispatch(rerSearch(queryString));
   };
 
   return (
@@ -263,37 +244,39 @@ const Search = () => {
               </Skiplink>
 
               {/* Toggle filtri su mobile */}
-              <div className="d-block d-lg-none d-xl-none">
-                <div className="row pb-3">
-                  <div className="col-6">
-                    {searchResults?.result?.items_total > 0 && (
-                      <small aria-live="polite">
-                        {intl.formatMessage(messages.foundNResults, {
-                          total: searchResults.result.items_total,
-                        })}
-                      </small>
-                    )}
-                  </div>
-                  <div className="col-6 align-self-center">
-                    <div className="float-end">
-                      <a
-                        onClick={() => setCollapseFilters((prev) => !prev)}
-                        href="#categoryCollapse"
-                        role="button"
-                        className={cx('btn btn-sm fw-bold text-uppercase', {
-                          'btn-outline-primary': collapseFilters,
-                          'btn-primary': !collapseFilters,
-                        })}
-                        data-toggle="collapse"
-                        aria-expanded={!collapseFilters}
-                        aria-controls="categoryCollapse"
-                      >
-                        {intl.formatMessage(messages.filtersCollapse)}
-                      </a>
+              {searchResults?.result?.facets?.length > 0 && (
+                <div className="d-block d-lg-none d-xl-none">
+                  <div className="row pb-3">
+                    <div className="col-6">
+                      {searchResults?.result?.items_total > 0 && (
+                        <small aria-live="polite">
+                          {intl.formatMessage(messages.foundNResults, {
+                            total: searchResults.result.items_total,
+                          })}
+                        </small>
+                      )}
+                    </div>
+                    <div className="col-6 align-self-center">
+                      <div className="float-end">
+                        <a
+                          onClick={() => setCollapseFilters((prev) => !prev)}
+                          href="#categoryCollapse"
+                          role="button"
+                          className={cx('btn btn-sm fw-bold text-uppercase', {
+                            'btn-outline-primary': collapseFilters,
+                            'btn-primary': !collapseFilters,
+                          })}
+                          data-toggle="collapse"
+                          aria-expanded={!collapseFilters}
+                          aria-controls="categoryCollapse"
+                        >
+                          {intl.formatMessage(messages.filtersCollapse)}
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
               {/* ------- fine Toggle filtri su mobile ------- */}
             </Col>
           </Row>
@@ -316,38 +299,6 @@ const Search = () => {
                 id="search-results-region"
                 aria-live="polite"
               >
-                <div className="d-block ordering-widget">
-                  <Row className="pb-3 border-bottom">
-                    <Col xs={6} className="align-self-center">
-                      <p className="d-none d-lg-block" aria-live="polite">
-                        {intl.formatMessage(messages.foundNResults, {
-                          total: searchResults?.result?.items_total || 0,
-                        })}
-                      </p>
-                      <p className="d-block d-lg-none mb-0 text-end">
-                        {intl.formatMessage(messages.orderBy)}
-                      </p>
-                    </Col>
-                    <Col xs={6}>
-                      <SelectInput
-                        id="search-sort-on"
-                        value={
-                          sortOnOptions.filter((o) => o.value === sortOn)[0]
-                        }
-                        label={intl.formatMessage(messages.orderBy)}
-                        placeholder={
-                          sortOnOptions.find((o) => o.value === sortOn).label
-                        }
-                        onChange={(opt) => setSortOn(opt.value)}
-                        options={sortOnOptions}
-                        defaultValue={sortOnOptions.find(
-                          (o) => o.value === SORT_BY_RELEVANCE,
-                        )}
-                      />
-                    </Col>
-                  </Row>
-                </div>
-
                 {searchResults.loadingResults ||
                 (!searchResults.hasError && isEmpty(searchResults.result)) ? (
                   <div className="searchSpinnerWrapper">
@@ -355,6 +306,13 @@ const Search = () => {
                   </div>
                 ) : searchResults?.result?.items_total > 0 ? (
                   <>
+                    <OrderingWidget
+                      sortOn={sortOn}
+                      setSortOn={setSortOn}
+                      options={SORTING_OPTIONS}
+                      total={searchResults?.result?.items_total}
+                    />
+
                     <Row>
                       {searchResults?.result?.items?.map((item, index) => (
                         <Col md={12} key={item['@id']} className="p-0">
@@ -384,8 +342,7 @@ const Search = () => {
                   </Alert>
                 ) : (
                   !searchResults?.hasError &&
-                  !isEmpty(searchResults?.result) &&
-                  searchResults.result?.items?.length === 0 && (
+                  searchResults?.result?.items_total === 0 && (
                     <p>{intl.formatMessage(messages.no_results)}</p>
                   )
                 )}

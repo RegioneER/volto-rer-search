@@ -1,10 +1,9 @@
 import { RER_SEARCH, RESET_RER_SEARCH } from 'volto-rer-search/actions';
-import { mock } from './mock_search';
 
 const initialState = {
   error: null,
   hasError: false,
-  result: mock, //{}, //ToDo: remove mock
+  result: {},
   loadingResults: false,
 };
 
@@ -13,6 +12,7 @@ export function rerSearchReducer(state = initialState, action) {
     case `${RER_SEARCH}_PENDING`:
       return {
         ...state,
+        hasError: false,
         loadingResults: true,
       };
 
@@ -20,6 +20,7 @@ export function rerSearchReducer(state = initialState, action) {
       return {
         ...state,
         result: action.result,
+        hasError: false,
         loadingResults: false,
       };
 
