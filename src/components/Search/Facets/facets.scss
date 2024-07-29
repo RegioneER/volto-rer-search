@@ -1,0 +1,20 @@
+.facets {
+  fieldset legend,
+  label:not(.form-check-label) {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-transform: uppercase;
+
+    .icon {
+      color: var(--bs-gray-500);
+      width: 1.3em;
+    }
+  }
+
+  fieldset legend {
+    display: flex;
+    align-items: center;
+  }
+}

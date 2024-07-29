@@ -1,6 +1,7 @@
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 import { SelectInput } from 'design-comuni-plone-theme/components';
+import { Icon } from 'design-comuni-plone-theme/components/ItaliaTheme';
 
 const messages = defineMessages({
   placeholder: {
@@ -9,12 +10,13 @@ const messages = defineMessages({
   },
 });
 
-const KeywordIndexWidget = ({
+const SelectWidget = ({
   index,
   value = [],
   label,
   onChange,
   items = {},
+  multivalued = true,
 }) => {
   const intl = useIntl();
   const options = Object.keys(items).map((k) => {
@@ -25,7 +27,20 @@ const KeywordIndexWidget = ({
     <SelectInput
       id={index}
       value={value?.map((v) => options.filter((o) => o.value === v)[0]) ?? []}
-      label={label[intl.locale]}
+      label={
+        <>
+          {index === 'Subject' && (
+            <Icon
+              icon="tags"
+              color=""
+              padding={false}
+              size="s"
+              className="me-2"
+            />
+          )}
+          {label[intl.locale]}
+        </>
+      }
       onChange={(opt) => {
         onChange(
           index,
@@ -36,11 +51,12 @@ const KeywordIndexWidget = ({
       options={options}
       isClearable={true}
       isSearchable={true}
-      isMulti={true}
+      isMulti={multivalued}
+      aria-controls="search-results-region"
     />
   ) : (
     <></>
   );
 };
 
-export default KeywordIndexWidget;
+export default SelectWidget;

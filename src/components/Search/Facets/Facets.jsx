@@ -1,17 +1,23 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { KeywordIndexWidget } from 'volto-rer-search/components/Search';
-import { GroupsWidget } from 'volto-rer-search/components/Search';
+import {
+  GroupsWidget,
+  SelectWidget,
+  LocationWidget,
+} from 'volto-rer-search/components/Search';
 
-const Facets = ({ filters = {}, setFilters }) => {
+import './facets.scss';
+
+const Facets = ({ filters = {}, setFilters, path }) => {
   const facets = useSelector((state) => state.rer_search?.result?.facets ?? []);
-  console.log(facets);
+
   const onChangeField = (field, value) => {
     setFilters({ ...filters, [field]: value });
   };
 
   return (
-    <>
+    <div className="facets">
+      <LocationWidget filters={filters} setFilters={setFilters} />
       {facets?.map((f) => (
         <div key={f.index} className="mb-5">
           {f.type === 'Groups' && (
@@ -22,7 +28,7 @@ const Facets = ({ filters = {}, setFilters }) => {
             />
           )}
           {f.type === 'KeywordIndex' && (
-            <KeywordIndexWidget
+            <SelectWidget
               {...f}
               onChange={onChangeField}
               value={filters[f.index]}
@@ -30,7 +36,7 @@ const Facets = ({ filters = {}, setFilters }) => {
           )}
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

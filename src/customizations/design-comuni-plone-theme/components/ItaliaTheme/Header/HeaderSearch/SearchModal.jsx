@@ -35,6 +35,9 @@ import {
 } from 'design-react-kit';
 
 import { Icon } from 'design-comuni-plone-theme/components/ItaliaTheme';
+import SearchUtils from 'volto-rer-search/components/Search/utils';
+
+const { getSearchParamsURL, getBaseUrl } = SearchUtils;
 
 const messages = defineMessages({
   closeSearch: {
@@ -63,9 +66,12 @@ const SearchModal = ({ closeModal, show }) => {
   const subsite = useSelector((state) => state.subsite?.data);
   const inputRef = React.useRef(null);
 
-  const getSearchParamsURL = () => {
-    console.log('todo: fare un helper getSearchParamsURL');
-  };
+  const baseUrl = getBaseUrl(subsite, intl.locale);
+  const searchURL = getSearchParamsURL({
+    searchableText,
+    //filters: { path: baseUrl },
+    baseUrl: baseUrl,
+  });
 
   useEffect(() => {
     if (show) {
@@ -89,20 +95,7 @@ const SearchModal = ({ closeModal, show }) => {
       submitSearch();
 
       if (__CLIENT__) {
-        window.location.href =
-          window.location.origin +
-          getSearchParamsURL(
-            searchableText,
-            // sections,
-            // topics,
-            // options,
-            // {},
-            // null,
-            // null,
-            // null,
-            subsite,
-            intl.locale,
-          );
+        window.location.href = window.location.origin + searchURL;
       }
     }
   };
@@ -149,19 +142,7 @@ const SearchModal = ({ closeModal, show }) => {
                   ref={inputRef}
                 />
                 <a
-                  href={getSearchParamsURL(
-                    searchableText,
-                    // sections,
-                    // topics,
-                    // options,
-                    // {},
-                    // null,
-                    // null,
-                    // null,
-                    subsite,
-                    intl.locale,
-                    false,
-                  )}
+                  href={searchURL}
                   onClick={submitSearch}
                   className="btn btn-link rounded-0 py-0"
                   title={intl.formatMessage(messages.search)}
@@ -177,19 +158,7 @@ const SearchModal = ({ closeModal, show }) => {
 
           <div className="search-filters text-center">
             <a
-              href={getSearchParamsURL(
-                searchableText,
-                // sections,
-                // topics,
-                // options,
-                // {},
-                // null,
-                // null,
-                // null,
-                subsite,
-                intl.locale,
-                false,
-              )}
+              href={searchURL}
               onClick={submitSearch}
               className="btn-icon btn btn-primary"
               title={intl.formatMessage(messages.search)}

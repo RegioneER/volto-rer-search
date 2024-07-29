@@ -43,10 +43,14 @@ import { rerSearch } from 'volto-rer-search/actions';
 import { useDebouncedEffect } from 'design-comuni-plone-theme/helpers';
 
 import SearchUtils from 'volto-rer-search/components/Search/utils';
-import { Facets, OrderingWidget } from 'volto-rer-search/components/Search';
+import {
+  Facets,
+  OrderingWidget,
+  SpecificFilters,
+} from 'volto-rer-search/components/Search';
 import config from '@plone/volto/registry';
 
-const { getSearchParamsURL, parseExtraParams } = SearchUtils;
+const { getSearchParamsURL, parseExtraParams, getBaseUrl } = SearchUtils;
 
 const messages = defineMessages({
   sort_on_relevance: {
@@ -116,11 +120,13 @@ const SORTING_OPTIONS = {
 
 const Search = () => {
   const intl = useIntl();
+  const currentLang = intl.locale;
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
   const subsite = useSelector((state) => state.subsite?.data);
   const searchResults = useSelector((state) => state.rer_search);
+  const baseUrl = getBaseUrl(subsite, currentLang);
 
   const [searchableText, setSearchableText] = useState(
     qs.parse(location.search)?.SearchableText ?? '',
@@ -128,16 +134,17 @@ const Search = () => {
   const [extraParams, setExtraParams] = useState({
     ...parseExtraParams(qs.parse(location.search)),
   });
-  const [customPath] = useState(qs.parse(location.search)?.custom_path ?? '');
 
-  const [collapseFilters, _setCollapseFilters] = useState(true);
+  const [collapseFilters, setCollapseFilters] = useState(true);
   const [sortOn, setSortOn] = useState(SORT_BY_RELEVANCE);
   const [currentPage, setCurrentPage] = useState(
     qs.parse(location.search)?.b_start
       ? qs.parse(location.search).b_start / config.settings.defaultPageSize + 1
       : 1,
   );
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({
+    path: qs.parse(location.search)?.path ?? subsite ? baseUrl : '',
+  });
 
   const handleQueryPaginationChange = (_e, { activePage }) => {
     window.scrollTo(0, 0);
@@ -170,11 +177,9 @@ const Search = () => {
       searchableText: searchableText?.length > 0 ? `${searchableText}*` : '',
       sortOn: SORTING_OPTIONS[sortOn],
       currentPage,
-      customPath,
-      subsite,
-      currentLang: intl.locale,
       filters,
       extraParams,
+      baseUrl,
     };
     const queryString = getSearchParamsURL({
       getObject: true,
@@ -244,7 +249,8 @@ const Search = () => {
               </Skiplink>
 
               {/* Toggle filtri su mobile */}
-              {searchResults?.result?.facets?.length > 0 && (
+              {(searchResults?.result?.facets?.length > 0 ||
+                searchResults?.result?.path_infos) && (
                 <div className="d-block d-lg-none d-xl-none">
                   <div className="row pb-3">
                     <div className="col-6">
@@ -306,6 +312,10 @@ const Search = () => {
                   </div>
                 ) : searchResults?.result?.items_total > 0 ? (
                   <>
+                    {/* <SpecificFilters
+                      filters={filters}
+                      setFilters={setFilters}
+                    /> */}
                     <OrderingWidget
                       sortOn={sortOn}
                       setSortOn={setSortOn}

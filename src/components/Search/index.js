@@ -13,6 +13,12 @@ export const Facets = loadable(
       /* webpackChunkName: "RERSearch" */ 'volto-rer-search/components/Search/Facets/Facets'
     ),
 );
+export const LocationWidget = loadable(
+  () =>
+    import(
+      /* webpackChunkName: "RERSearch" */ 'volto-rer-search/components/Search/Facets/widgets/LocationWidget'
+    ),
+);
 
 export const OrderingWidget = loadable(
   () =>
@@ -21,10 +27,17 @@ export const OrderingWidget = loadable(
     ),
 );
 
-export const KeywordIndexWidget = loadable(
+export const SelectWidget = loadable(
   () =>
     import(
-      /* webpackChunkName: "RERSearch" */ 'volto-rer-search/components/Search/Facets/widgets/KeywordIndexWidget'
+      /* webpackChunkName: "RERSearch" */ 'volto-rer-search/components/Search/Facets/widgets/SelectWidget'
+    ),
+);
+
+export const DatetimeWidget = loadable(
+  () =>
+    import(
+      /* webpackChunkName: "RERSearch" */ 'volto-rer-search/components/Search/Facets/widgets/DatetimeWidget'
     ),
 );
 
@@ -32,5 +45,12 @@ export const GroupsWidget = loadable(
   () =>
     import(
       /* webpackChunkName: "RERSearch" */ 'volto-rer-search/components/Search/Facets/widgets/GroupsWidget'
+    ),
+);
+
+export const SpecificFilters = loadable(
+  () =>
+    import(
+      /* webpackChunkName: "RERSearch" */ 'volto-rer-search/components/Search/Facets/SpecificFilters'
     ),
 );

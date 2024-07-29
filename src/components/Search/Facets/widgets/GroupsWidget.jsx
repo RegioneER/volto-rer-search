@@ -4,6 +4,8 @@ import { FormGroup, Input, Label } from 'design-react-kit';
 
 import { Icon } from 'design-comuni-plone-theme/components/ItaliaTheme';
 
+import './groups-widget.scss';
+
 const messages = defineMessages({
   placeholder: {
     id: 'keywordindex_placeholder',
@@ -15,8 +17,17 @@ const GroupsWidget = ({ index, value, label, onChange, items = {} }) => {
   const intl = useIntl();
 
   return items?.length > 0 ? (
-    <fieldset>
-      <legend>{label[intl.locale]}</legend>
+    <fieldset className="groups-widget">
+      <legend>
+        <Icon
+          icon="question-circle"
+          color=""
+          padding={false}
+          size="s"
+          className="me-2"
+        />
+        {label[intl.locale]}
+      </legend>
       {items.map((item, idx) => {
         const total = Object.keys(item.items).reduce(
           (acc, k) => (acc = acc + item.items[k]),
@@ -32,6 +43,7 @@ const GroupsWidget = ({ index, value, label, onChange, items = {} }) => {
               onChange={(e) => {
                 onChange(index, item.id);
               }}
+              aria-controls="search-results-region"
             />
             <Label check htmlFor={item.id}>
               {item.icon && (
@@ -40,7 +52,7 @@ const GroupsWidget = ({ index, value, label, onChange, items = {} }) => {
                   color=""
                   padding={false}
                   size="xs"
-                  className="me-2"
+                  className="me-1"
                 />
               )}
               {item.label[intl.locale]} ({total})

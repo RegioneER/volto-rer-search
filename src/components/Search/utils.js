@@ -29,6 +29,14 @@ const parseExtraParams = (params) => {
   return ret;
 };
 
+const getBaseUrl = (subsite, currentLang) => {
+  return subsite
+    ? flattenToAppURL(subsite['@id'])
+    : config.settings.isMultilingual
+      ? '/' + currentLang
+      : '';
+};
+
 // const parseCustomPath = (location) => {
 //   const qsOptions = qs.parse(location?.search ?? '');
 //   let customPath = null;
@@ -43,24 +51,17 @@ const getSearchParamsURL = ({
   searchableText,
   sortOn = {},
   currentPage,
-  customPath,
-  subsite,
-  currentLang,
-  filters,
+  filters = {},
   extraParams,
+  baseUrl,
 }) => {
-  let baseUrl = subsite
-    ? flattenToAppURL(subsite['@id'])
-    : config.settings.isMultilingual
-      ? '/' + currentLang
-      : '';
   const b_start = currentPage
     ? (currentPage - 1) * config.settings.defaultPageSize
     : 0;
 
   let pathQuery = null;
-  if (customPath?.length > 0) {
-    pathQuery = { 'path.query': customPath };
+  if (filters?.path?.length > 0) {
+    pathQuery = { 'path.query': filters.path };
   } else if (baseUrl?.length > 0) {
     pathQuery = {
       'path.query': baseUrl,
@@ -72,25 +73,31 @@ const getSearchParamsURL = ({
     : null;
 
   baseUrl += '/search';
-  console.log(
-    baseUrl +
-      '?' +
-      qs.stringify({
-        ...(text ?? {}),
-        ...(pathQuery ?? {}),
-        ...sortOn,
-        ...filters,
-        ...extraParams,
-      }),
-  );
+  // console.log(
+  //   baseUrl +
+  //     '?' +
+  //     qs.stringify({
+  //       ...(text ?? {}),
+  //       ...(pathQuery ?? {}),
+  //       ...sortOn,
+  //       ...filters,
+  //       ...extraParams,
+  //     }),
+  // );
+
+  let _filters = { ...filters };
+  delete _filters.path;
+
+  //per la vera chiamata al BE
   if (getObject) {
     let obj = {
       ...(text ?? {}),
       ...(pathQuery ?? {}),
       ...sortOn,
-      ...filters,
+      ..._filters,
       ...extraParams,
       b_start: b_start,
+      metadata_fields: ['Subject', 'Date'],
       //skipNull: true,
       //use_site_search_settings: true,
     };
@@ -98,15 +105,15 @@ const getSearchParamsURL = ({
     return obj;
   }
 
+  //per modificare i parametri del browser
   return (
     baseUrl +
     '?' +
     qs.stringify(
       {
         ...(text ?? {}),
-        ...(pathQuery ?? {}),
         ...sortOn,
-        ...filters,
+        ...filters, //comprende anche path, quindi non serve pathQuery qui
         ...extraParams,
       },
       // { skipNull: true },
@@ -119,6 +126,7 @@ const utils = {
   defaultOptions,
   getSearchParamsURL,
   parseExtraParams,
+  getBaseUrl,
 };
 
 export default utils;
