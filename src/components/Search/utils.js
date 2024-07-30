@@ -97,7 +97,13 @@ const getSearchParamsURL = ({
       ..._filters,
       ...extraParams,
       b_start: b_start,
-      metadata_fields: ['Subject', 'Date', 'effective', 'modified'],
+      metadata_fields: [
+        'Subject',
+        'Date',
+        'effective',
+        'modified',
+        'scadenza_bando',
+      ],
       //skipNull: true,
       //use_site_search_settings: true,
     };
