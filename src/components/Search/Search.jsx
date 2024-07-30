@@ -36,7 +36,6 @@ import {
   Pagination,
   Icon,
   RemoveBodyClass,
-  SearchResultItem,
 } from 'design-comuni-plone-theme/components/ItaliaTheme';
 import { TextInput } from 'design-comuni-plone-theme/components';
 import { rerSearch } from 'volto-rer-search/actions';
@@ -47,6 +46,7 @@ import {
   Facets,
   OrderingWidget,
   SpecificFilters,
+  ResultItem,
 } from 'volto-rer-search/components/Search';
 import config from '@plone/volto/registry';
 
@@ -142,8 +142,11 @@ const Search = () => {
       ? qs.parse(location.search).b_start / config.settings.defaultPageSize + 1
       : 1,
   );
+
+  const paramSubject = qs.parse(location.search)?.Subject;
   const [filters, setFilters] = useState({
     path: qs.parse(location.search)?.path ?? subsite ? baseUrl : '',
+    Subject: typeof paramSubject === 'string' ? [paramSubject] : paramSubject,
   });
 
   const handleQueryPaginationChange = (_e, { activePage }) => {
@@ -287,7 +290,7 @@ const Search = () => {
             </Col>
           </Row>
           <Row>
-            <aside className="col-lg-3 py-lg-5">
+            <aside className="col-lg-3 py-lg-5 pe-lg-4">
               <div className="pe-4"></div>
               <Collapse
                 isOpen={!collapseFilters}
@@ -324,12 +327,13 @@ const Search = () => {
                     />
 
                     <Row>
-                      {searchResults?.result?.items?.map((item, index) => (
+                      {searchResults?.result?.items?.map((item) => (
                         <Col md={12} key={item['@id']} className="p-0">
-                          <SearchResultItem
+                          <ResultItem
                             item={item}
-                            index={index}
                             searchableText={searchableText}
+                            baseUrl={baseUrl}
+                            filters={filters}
                           />
                         </Col>
                       ))}

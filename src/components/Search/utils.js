@@ -97,7 +97,7 @@ const getSearchParamsURL = ({
       ..._filters,
       ...extraParams,
       b_start: b_start,
-      metadata_fields: ['Subject', 'Date'],
+      metadata_fields: ['Subject', 'Date', 'effective', 'modified'],
       //skipNull: true,
       //use_site_search_settings: true,
     };
@@ -106,6 +106,11 @@ const getSearchParamsURL = ({
   }
 
   //per modificare i parametri del browser
+  _filters = { ...filters };
+  if (!filters.path) {
+    delete _filters.path;
+  }
+
   return (
     baseUrl +
     '?' +
@@ -113,7 +118,7 @@ const getSearchParamsURL = ({
       {
         ...(text ?? {}),
         ...sortOn,
-        ...filters, //comprende anche path, quindi non serve pathQuery qui
+        ..._filters, //comprende anche path, quindi non serve pathQuery qui
         ...extraParams,
       },
       // { skipNull: true },

@@ -47,6 +47,12 @@ export const GroupsWidget = loadable(
       /* webpackChunkName: "RERSearch" */ 'volto-rer-search/components/Search/Facets/widgets/GroupsWidget'
     ),
 );
+export const ResultItem = loadable(
+  () =>
+    import(
+      /* webpackChunkName: "RERSearch" */ 'volto-rer-search/components/Search/ResultItem/ResultItem'
+    ),
+);
 
 export const SpecificFilters = loadable(
   () =>
