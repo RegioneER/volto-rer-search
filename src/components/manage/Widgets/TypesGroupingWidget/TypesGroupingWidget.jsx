@@ -130,6 +130,7 @@ const TypesGroupingWidget = ({
       dispatch(
         getVocabulary({
           vocabNameOrURL: GROUPING_TYPES_VOCABULARY,
+          size: 500,
         }),
       ); //
     }
@@ -137,6 +138,7 @@ const TypesGroupingWidget = ({
       dispatch(
         getVocabulary({
           vocabNameOrURL: ADVANCED_FILTERS_VOCABULARY,
+          size: 500,
         }),
       );
     }

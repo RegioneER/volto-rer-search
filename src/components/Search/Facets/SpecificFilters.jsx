@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, defineMessages } from 'react-intl';
 import { Row, Col } from 'design-react-kit';
-import { DateFilter as DateRangeFilter } from 'design-comuni-plone-theme/components/ItaliaTheme/Blocks/Common/SearchFilters';
 
 import {
   SelectWidget,
   DatetimeWidget,
+  DateRangeWidget,
 } from 'volto-rer-search/components/Search';
+import { getDateRangeFilterValue } from 'volto-rer-search/helpers';
 
 const messages = defineMessages({
   advanced_filters: {
@@ -17,80 +18,58 @@ const messages = defineMessages({
 });
 const SpecificFilters = ({ filters = {}, setFilters }) => {
   const intl = useIntl();
-  const _advanced_filters = useSelector(
-    (state) => state.rer_search?.result?.advanced_filters ?? {},
-  );
-
-  const [advanced_filters, setAdvanced_filters] = useState({});
-
-  useEffect(() => {
-    const isEventRangeDates =
-      _advancedFilters.start &&
-      _advancedFilters.start.type === 'date' &&
-      _advancedFilters.end &&
-      _advancedFilters.end.type === 'date';
-
-    if (isEventRangeDates) {
-      const dateRangeFilter = Object.keys(_advancedFilters).reduce(
-        (acc, val) => {
-          if (val === 'start' || val === 'end') {
-            return {
-              ...acc,
-              date: {
-                ...(acc.date ? acc.date : {}),
-                [val]: _advancedFilters[val],
-                type: 'date_range',
-              },
-            };
-          }
-
-          return {
-            ...acc,
-            [val]: _advancedFilters[val],
-          };
-        },
-        {},
-      );
-
-      setAdvanced_filters(dateRangeFilter);
-    } else {
-      setAdvanced_filters(advanced_filters);
+  const advanced_filters = useSelector((state) => {
+    if (filters.group) {
+      return state.rer_search?.result?.facets
+        .filter((f) => f.index === 'group')?.[0]
+        .items.filter((i) => i.id == filters.group)?.[0].advanced_filters;
     }
-  }, [_advanced_filters]);
+    return {};
+  });
 
-  console.log({ advanced_filters });
+  console.log(advanced_filters);
 
   const onChangeField = (field, value) => {
     setFilters({ ...filters, [field]: value });
   };
 
-  return Object.keys(advanced_filters).length > 0 ? (
+  return advanced_filters.length > 0 ? (
     <div className="advanced-filters">
       <div className="title">
         {intl.formatMessage(messages.advanced_filters)}
       </div>
       <Row>
-        {Object.keys(advanced_filters)?.map((fkey) => {
-          const f = advanced_filters[fkey];
-
+        {advanced_filters.map((f) => {
           return (
-            <Col xs={12} key={fkey} className="mb-5">
-              {f.type === 'date' && (
+            <Col xs={12} md={6} key={f.index} className="mb-5">
+              {f.type === 'DateIndex' && (
                 <>
-                  TODO: testare
                   <DatetimeWidget
-                    id={fkey}
-                    value={filters[fkey]}
+                    {...f}
+                    value={filters[f.index]}
                     onChange={onChangeField}
+                    dateOnly={true}
                   />
                 </>
               )}
-              {(f.type === 'array' || f.type === 'select') && (
+              {f.type === 'DateRangeIndex' && (
+                <DateRangeWidget
+                  {...f}
+                  onChange={(f) => {
+                    console.log('onchange', f);
+                    setFilters({ ...filters, ...f });
+                  }}
+                  value={getDateRangeFilterValue(filters, f)}
+                  dateOnly={true}
+                />
+              )}
+              {(f.type === 'array' ||
+                f.type === 'select' ||
+                f.type === 'KeywordIndex') && (
                 <>
-                  TODO: da testare
                   <SelectWidget
                     {...f}
-                    index={fkey}
+                    index={f.index}
                     items={f.options}
                     onChange={(id, value) => {
                       if (!value || value.length == 0) {
@@ -127,18 +106,7 @@ const SpecificFilters = ({ filters = {}, setFilters }) => {
                         });
                       }
                     }}
-                    value={filters[fkey]}
-                  />
-                </>
-              )}
-              {f.type === 'date_range' && (
-                <>
-                  TODO:gestire bene la query. vedi
-                  https://github.com/RegioneER/rer.sitesearch/blob/db23b4e4840c60bfc032a61c1b623688aacdbb62/src/rer/sitesearch/browser/static/js/SpecificFilters/SpecificFilter.js#L156
-                  <DateRangeFilter
-                    id={fkey}
-                    value={filters[fkey]}
-                    onChange={onChangeField}
+                    value={filters[f.index]}
                   />
                 </>
               )}

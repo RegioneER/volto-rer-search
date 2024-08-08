@@ -184,6 +184,7 @@ const Search = () => {
       extraParams,
       baseUrl,
     };
+    console.log(filters);
     const queryString = getSearchParamsURL({
       getObject: true,
       ...par,
@@ -315,10 +316,10 @@ const Search = () => {
                   </div>
                 ) : searchResults?.result?.items_total > 0 ? (
                   <>
-                    {/* <SpecificFilters
+                    <SpecificFilters
                       filters={filters}
                       setFilters={setFilters}
-                    /> */}
+                    />
                     <OrderingWidget
                       sortOn={sortOn}
                       setSortOn={setSortOn}

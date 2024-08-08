@@ -113,6 +113,7 @@ const AvailableIndexesWidget = ({
       dispatch(
         getVocabulary({
           vocabNameOrURL: INDEXES_VOCABULARY,
+          size: 500,
         }),
       );
     }

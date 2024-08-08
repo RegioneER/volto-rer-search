@@ -1,0 +1,14 @@
+.search-date-time-widget {
+  label {
+    padding: 0 0.5rem;
+    margin-bottom: 0.3rem;
+  }
+  .ui.input.date-input {
+    .DateInput {
+      width: 100%;
+    }
+    .ui.button {
+      margin-right: 0;
+    }
+  }
+}

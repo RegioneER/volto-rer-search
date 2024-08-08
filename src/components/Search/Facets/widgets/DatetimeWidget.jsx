@@ -25,6 +25,8 @@ import 'rc-time-picker/assets/index.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
+import './datetime-widget.scss';
+
 const TimePicker = loadable(() => import('rc-time-picker'));
 
 const messages = defineMessages({
@@ -145,7 +147,7 @@ export class DatetimeWidgetComponent extends Component {
       const dateValue = isDateOnly
         ? base.format('YYYY-MM-DD')
         : base.toISOString();
-      this.props.onChange(this.props.id, dateValue);
+      this.props.onChange(this.props.index, dateValue);
     }
     this.setState({ isDefault: false });
   };
@@ -165,13 +167,13 @@ export class DatetimeWidgetComponent extends Component {
         seconds: 0,
       });
       const dateValue = base.toISOString();
-      this.props.onChange(this.props.id, dateValue);
+      this.props.onChange(this.props.index, dateValue);
     }
   };
 
   onResetDates = () => {
     this.setState({ isDefault: false });
-    this.props.onChange(this.props.id, null);
+    this.props.onChange(this.props.index, null);
   };
 
   /**
@@ -183,7 +185,7 @@ export class DatetimeWidgetComponent extends Component {
   onFocusChange = ({ focused }) => this.setState({ focused });
 
   render() {
-    const { id, resettable, intl, reactDates, widgetOptions, lang } =
+    const { resettable, intl, reactDates, widgetOptions, lang, index, label } =
       this.props;
     const noPastDates =
       this.props.noPastDates || widgetOptions?.pattern_options?.noPastDates;
@@ -191,66 +193,70 @@ export class DatetimeWidgetComponent extends Component {
     const datetime = this.getInternalValue();
     const dateOnly = this.getDateOnly();
     const { SingleDatePicker } = reactDates;
+    const id = index;
 
     return (
-      <div className="date-time-widget-wrapper">
-        <div
-          className={cx('ui input date-input', {
-            'default-date': this.state.isDefault,
-          })}
-        >
-          <SingleDatePicker
-            date={datetime}
-            disabled={this.props.isDisabled}
-            onDateChange={this.onDateChange}
-            focused={this.state.focused}
-            numberOfMonths={1}
-            {...(noPastDates ? {} : { isOutsideRange: () => false })}
-            onFocusChange={this.onFocusChange}
-            noBorder
-            displayFormat={moment
-              .localeData(toBackendLang(lang))
-              .longDateFormat('L')}
-            navPrev={<PrevIcon />}
-            navNext={<NextIcon />}
-            id={`${id}-date`}
-            placeholder={intl.formatMessage(messages.date)}
-            openDirection={this.props.openDirection ?? 'down'}
-          />
-        </div>
-        {!dateOnly && (
+      <div className="search-date-time-widget">
+        <label for={id}>{label[lang]}</label>
+        <div className="date-time-widget-wrapper">
           <div
-            className={cx('ui input time-input', {
+            className={cx('ui input date-input', {
               'default-date': this.state.isDefault,
             })}
           >
-            <TimePicker
+            <SingleDatePicker
+              date={datetime}
               disabled={this.props.isDisabled}
-              defaultValue={datetime}
-              value={datetime}
-              onChange={this.onTimeChange}
-              allowEmpty={false}
-              showSecond={false}
-              use12Hours={lang === 'en'}
-              id={`${id}-time`}
-              format={moment
+              onDateChange={this.onDateChange}
+              focused={this.state.focused}
+              numberOfMonths={1}
+              {...(noPastDates ? {} : { isOutsideRange: () => false })}
+              onFocusChange={this.onFocusChange}
+              noBorder
+              displayFormat={moment
                 .localeData(toBackendLang(lang))
-                .longDateFormat('LT')}
-              placeholder={intl.formatMessage(messages.time)}
-              focusOnOpen
-              placement="bottomRight"
+                .longDateFormat('L')}
+              navPrev={<PrevIcon />}
+              navNext={<NextIcon />}
+              id={`${id}-date`}
+              placeholder={intl.formatMessage(messages.date)}
+              openDirection={this.props.openDirection ?? 'down'}
             />
           </div>
-        )}
-        {resettable && (
-          <button
-            disabled={this.props.isDisabled || !datetime}
-            onClick={() => this.onResetDates()}
-            className="item ui noborder button"
-          >
-            <Icon name={clearSVG} size="24px" className="close" />
-          </button>
-        )}
+          {!dateOnly && (
+            <div
+              className={cx('ui input time-input', {
+                'default-date': this.state.isDefault,
+              })}
+            >
+              <TimePicker
+                disabled={this.props.isDisabled}
+                defaultValue={datetime}
+                value={datetime}
+                onChange={this.onTimeChange}
+                allowEmpty={false}
+                showSecond={false}
+                use12Hours={lang === 'en'}
+                id={`${id}-time`}
+                format={moment
+                  .localeData(toBackendLang(lang))
+                  .longDateFormat('LT')}
+                placeholder={intl.formatMessage(messages.time)}
+                focusOnOpen
+                placement="bottomRight"
+              />
+            </div>
+          )}
+          {resettable && (
+            <button
+              disabled={this.props.isDisabled || !datetime}
+              onClick={() => this.onResetDates()}
+              className="item ui noborder button"
+            >
+              <Icon name={clearSVG} size="24px" className="close" />
+            </button>
+          )}
+        </div>
       </div>
     );
   }
