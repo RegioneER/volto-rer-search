@@ -4,7 +4,7 @@
  *
  *
  * CUSTOMIZATIONS:
- * - use config.settings.siteSearch.extraParams in search query
+ - custom search
  */
 
 import React, { useState, useEffect } from 'react';
@@ -14,6 +14,7 @@ import { values, isEmpty } from 'lodash';
 import cx from 'classnames';
 import qs from 'query-string';
 import moment from 'moment';
+
 import {
   Container,
   Row,
@@ -48,9 +49,10 @@ import {
   SpecificFilters,
   ResultItem,
 } from 'volto-rer-search/components/Search';
+import { getParams } from 'volto-rer-search/helpers';
 import config from '@plone/volto/registry';
 
-const { getSearchParamsURL, parseExtraParams, getBaseUrl } = SearchUtils;
+const { getSearchParamsURL, getBaseUrl } = SearchUtils;
 
 const messages = defineMessages({
   sort_on_relevance: {
@@ -128,24 +130,22 @@ const Search = () => {
   const searchResults = useSelector((state) => state.rer_search);
   const baseUrl = getBaseUrl(subsite, currentLang);
 
+  const params = getParams(location);
+
   const [searchableText, setSearchableText] = useState(
-    qs.parse(location.search)?.SearchableText ?? '',
+    params.SearchableText ?? '',
   );
-  const [extraParams, setExtraParams] = useState({
-    ...parseExtraParams(qs.parse(location.search)),
-  });
 
   const [collapseFilters, setCollapseFilters] = useState(true);
   const [sortOn, setSortOn] = useState(SORT_BY_RELEVANCE);
   const [currentPage, setCurrentPage] = useState(
-    qs.parse(location.search)?.b_start
-      ? qs.parse(location.search).b_start / config.settings.defaultPageSize + 1
-      : 1,
+    params?.b_start ? params.b_start / config.settings.defaultPageSize + 1 : 1,
   );
 
-  const paramSubject = qs.parse(location.search)?.Subject;
+  const paramSubject = params?.Subject;
   const [filters, setFilters] = useState({
-    path: qs.parse(location.search)?.path ?? subsite ? baseUrl : '',
+    ...params,
+    path: params?.path ?? subsite ? baseUrl : '',
     Subject: typeof paramSubject === 'string' ? [paramSubject] : paramSubject,
   });
 
@@ -172,7 +172,7 @@ const Search = () => {
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     600,
-    [dispatch, searchableText, sortOn, currentPage, extraParams, filters],
+    [dispatch, searchableText, sortOn, currentPage, filters],
   );
 
   const doSearch = () => {
@@ -181,7 +181,6 @@ const Search = () => {
       sortOn: SORTING_OPTIONS[sortOn],
       currentPage,
       filters,
-      extraParams,
       baseUrl,
     };
     console.log(filters);

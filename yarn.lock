@@ -5421,6 +5421,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dataobject-parser@npm:1.2.25":
+  version: 1.2.25
+  resolution: "dataobject-parser@npm:1.2.25"
+  checksum: 121312a3976fbb3b4b4045180c1a2927d9833a61b40d4758c9c15a430464f64547cc02972442cb7fbc7443ef92461fc598e9ca939b798f6101883ed1c1b4a66c
+  languageName: node
+  linkType: hard
+
 "dateformat@npm:^3.0.0":
   version: 3.0.3
   resolution: "dateformat@npm:3.0.3"
@@ -11051,6 +11058,7 @@ __metadata:
     "@commitlint/config-conventional": ^17.6.6
     "@plone/scripts": ^3.3.2
     "@release-it/conventional-changelog": ^5.1.1
+    dataobject-parser: 1.2.25
     eslint: 8.49.0
     eslint-config-prettier: 9.0.0
     eslint-config-react-app: 7.0.1

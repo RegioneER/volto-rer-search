@@ -1,3 +1,4 @@
+import { dotify } from 'volto-rer-search/helpers';
 export const RER_SEARCH = 'GET_RER_SEARCH';
 export const RESET_RER_SEARCH = 'RESET_RER_SEARCH';
 
@@ -15,7 +16,7 @@ export function rerSearch(params) {
     request: {
       op: 'get',
       path: `/@rer-search`,
-      params: params,
+      params: params ? dotify(params) : null,
     },
   };
 }

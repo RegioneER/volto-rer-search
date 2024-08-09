@@ -12,9 +12,9 @@ import { rerSearchReducer } from 'volto-rer-search/reducers';
 const applyConfig = (config) => {
   config.settings['volto-rer-search'] = {
     ...(config.settings['volto-rer-search'] ?? {}),
-    siteSearch: {
-      extraParams: ['authors'],
-    },
+    // siteSearch: {
+    //   extraParams: ['authors'], //non serve più perchè i parametri dall'url vengono letti tutti, senza distinizione degli extra
+    // },
     icons: [
       ['archive', 'Archive'],
       ['broadcast-tower', 'Broadcast Tower'],

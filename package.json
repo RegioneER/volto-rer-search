@@ -51,6 +51,7 @@
     "@plone/volto": "^17.0.0"
   },
   "dependencies": {
+    "dataobject-parser": "1.2.25",
     "volto-multilingual-widget": "3.2.1"
   }
 }

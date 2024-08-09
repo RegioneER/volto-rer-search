@@ -1,5 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useIntl } from 'react-intl';
+import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
+
 import {
   GroupsWidget,
   SelectWidget,
@@ -12,8 +15,11 @@ import { getDateRangeFilterValue } from 'volto-rer-search/helpers';
 
 import './facets.scss';
 
-const Facets = ({ filters = {}, setFilters, path }) => {
+const Facets = ({ filters = {}, setFilters, path, moment: momentlib }) => {
+  const intl = useIntl();
   const facets = useSelector((state) => state.rer_search?.result?.facets ?? []);
+  const moment = momentlib.default;
+  moment.locale(intl.locale);
 
   const onChangeField = (field, value) => {
     setFilters({ ...filters, [field]: value });
@@ -62,7 +68,7 @@ const Facets = ({ filters = {}, setFilters, path }) => {
               onChange={(f) => {
                 setFilters({ ...filters, ...f });
               }}
-              value={getDateRangeFilterValue(filters, f)}
+              value={getDateRangeFilterValue(filters, f, moment)}
               dateOnly={true}
             />
           )}
@@ -72,4 +78,4 @@ const Facets = ({ filters = {}, setFilters, path }) => {
   );
 };
 
-export default Facets;
+export default injectLazyLibs(['moment'])(Facets);

@@ -1,8 +1,8 @@
 /*
 CUSTOMIZATINOS:
-- use config.settings.siteSearch.extraParams in search query
-- added parseExtraParams fn
+
 - nella getSearchParamsURL fatto il lowerCase searchableText per le ricerche con Solr / Matomo
+- added dotify fn
 */
 import mapValues from 'lodash/mapValues';
 import moment from 'moment';
@@ -10,6 +10,7 @@ import qs from 'query-string';
 import { flattenToAppURL } from '@plone/volto/helpers';
 import config from '@plone/volto/registry';
 import { getItemsByPath } from 'design-comuni-plone-theme/helpers';
+import { dotify } from 'volto-rer-search/helpers';
 
 const defaultOptions = {
   activeContent: false,
@@ -17,42 +18,20 @@ const defaultOptions = {
   dateEnd: undefined,
 };
 
-const parseExtraParams = (params) => {
-  let ret = {};
-  config.settings.siteSearch.extraParams.forEach((ep) => {
-    const paramValue = params?.[ep] ?? '';
-
-    if (paramValue?.length > 0) {
-      ret[ep] = paramValue;
-    }
-  });
-  return ret;
-};
-
 const getBaseUrl = (subsite, currentLang) => {
   return subsite
     ? flattenToAppURL(subsite['@id'])
     : config.settings.isMultilingual
-      ? '/' + currentLang
-      : '';
+    ? '/' + currentLang
+    : '';
 };
 
-// const parseCustomPath = (location) => {
-//   const qsOptions = qs.parse(location?.search ?? '');
-//   let customPath = null;
-//   if (qsOptions['custom_path']) {
-//     customPath = qsOptions['custom_path'];
-//   }
-//   return customPath;
-// };
-/*Customizations: added param extraParams*/
 const getSearchParamsURL = ({
   getObject = false,
   searchableText,
   sortOn = {},
   currentPage,
   filters = {},
-  extraParams,
   baseUrl,
 }) => {
   const b_start = currentPage
@@ -81,7 +60,6 @@ const getSearchParamsURL = ({
   //       ...(pathQuery ?? {}),
   //       ...sortOn,
   //       ...filters,
-  //       ...extraParams,
   //     }),
   // );
 
@@ -95,7 +73,6 @@ const getSearchParamsURL = ({
       ...(pathQuery ?? {}),
       ...sortOn,
       ..._filters,
-      ...extraParams,
       b_start: b_start,
       metadata_fields: [
         'Subject',
@@ -103,6 +80,8 @@ const getSearchParamsURL = ({
         'effective',
         'modified',
         'scadenza_bando',
+        'path',
+        'path_depth',
       ],
       //skipNull: true,
       //use_site_search_settings: true,
@@ -124,8 +103,7 @@ const getSearchParamsURL = ({
       {
         ...(text ?? {}),
         ...sortOn,
-        ..._filters, //comprende anche path, quindi non serve pathQuery qui
-        ...extraParams,
+        ...dotify(_filters), //comprende anche path, quindi non serve pathQuery qui
       },
       // { skipNull: true },
     ) +
@@ -136,7 +114,6 @@ const getSearchParamsURL = ({
 const utils = {
   defaultOptions,
   getSearchParamsURL,
-  parseExtraParams,
   getBaseUrl,
 };
 

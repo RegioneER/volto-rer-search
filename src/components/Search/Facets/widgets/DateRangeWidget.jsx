@@ -191,11 +191,15 @@ const DateRangeWidget = (props) => {
     label_end,
     index_start,
     index_end,
+    moment: momentlib,
     ...rest
   } = props;
   const id = index;
   const { DateRangePicker } = reactDates;
   console.log('value', value);
+  const moment = momentlib.default;
+  moment.locale(intl.locale);
+
   let isMobile = false;
   if (__CLIENT__) isMobile = window && window.innerWidth < 992;
 
@@ -233,19 +237,19 @@ const DateRangeWidget = (props) => {
   }, []);
 
   const onDatesChange = ({ startDate, endDate }) => {
-    console.log('onDatesChange', startDate, endDate);
     const rangeStart = startDate || defaultStart;
     const rangeEnd = endDate || defaultEnd;
     const start = rangeStart
-      ? rangeStart.startOf('day').format('DD/MM/YYYY')
+      ? rangeStart.startOf('day').format('YYYY-MM-DD HH:mm')
       : null;
-    const end = rangeEnd ? rangeEnd.endOf('day').format('DD/MM/YYYY') : null;
+    const end = rangeEnd
+      ? rangeEnd.endOf('day').format('YYYY-MM-DD HH:mm')
+      : null;
 
     let v = {};
 
     //se vengono passati due indici diversi per i campi di start e di end
     if (index_start || index_end) {
-      v = { [index_start]: null, [index_end]: null };
       if (start) {
         v[index_start] = {
           range: 'min',
@@ -274,8 +278,6 @@ const DateRangeWidget = (props) => {
     }
     //se viene passato un solo indice su cui fare la ricerca
     else if (index) {
-      v = { [index]: null, [index]: null };
-
       if (start && end) {
         v[index] = {
           range: 'min:max',
@@ -293,6 +295,8 @@ const DateRangeWidget = (props) => {
         };
       }
     }
+
+    console.log(v);
 
     onChange(v);
   };
@@ -319,7 +323,7 @@ const DateRangeWidget = (props) => {
           minimumNights={0}
           focusedInput={focusedDateInput}
           onFocusChange={(focusedInput) => setFocusedDateInput(focusedInput)}
-          displayFormat="DD/MM/YYYY"
+          displayFormat={moment.localeData(intl.locale).longDateFormat('L')}
           hideKeyboardShortcutsPanel={true}
           showClearDates
           phrases={getDateRangePickerPhrases(intl)}
@@ -343,4 +347,4 @@ const DateRangeWidget = (props) => {
   );
 };
 
-export default injectLazyLibs(['reactDates'])(DateRangeWidget);
+export default injectLazyLibs(['reactDates', 'moment'])(DateRangeWidget);
