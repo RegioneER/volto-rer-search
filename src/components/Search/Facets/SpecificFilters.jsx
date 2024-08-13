@@ -28,89 +28,97 @@ const SpecificFilters = ({ filters = {}, setFilters, moment: momentlib }) => {
         .filter((f) => f.index === 'group')?.[0]
         .items?.filter((i) => i.id == filters.group)?.[0].advanced_filters;
     }
-    return {};
+    return [];
   });
-
-  //  console.log(advanced_filters);
 
   const onChangeField = (field, value) => {
     setFilters({ ...filters, [field]: value });
   };
 
-  return advanced_filters.length > 0 ? (
-    <div className="advanced-filters">
-      <div className="title">
-        {intl.formatMessage(messages.advanced_filters)}
-      </div>
-      <Row>
-        {advanced_filters.map((f) => {
-          return (
-            <Col xs={12} md={6} key={f.index} className="mb-5">
-              {f.type === 'DateIndex' && (
-                <>
-                  <DatetimeWidget
-                    {...f}
-                    value={filters[f.index]}
-                    onChange={onChangeField}
-                    dateOnly={true}
-                  />
-                </>
-              )}
-              {f.type === 'DateRangeIndex' && (
-                <DateRangeWidget
-                  {...f}
-                  onChange={(f) => {
-                    setFilters({ ...filters, ...f });
-                  }}
-                  value={getDateRangeFilterValue(filters, f, moment)}
-                  dateOnly={true}
-                />
-              )}
-              {(f.type === 'array' ||
-                f.type === 'select' ||
-                f.type === 'KeywordIndex') && (
-                <>
-                  <SelectWidget
-                    {...f}
-                    index={f.index}
-                    items={f.options}
-                    onChange={(id, value) => {
-                      if (!value || value.length == 0) {
-                        if (id === 'stato_bandi') {
-                          setFilters({
-                            chiusura_procedimento_bando: null,
-                            scadenza_bando: null,
-                            [id]: '',
-                          });
-                        } else {
-                          setFilters({ [id]: '' });
-                        }
-                      } else if (id === 'stato_bandi') {
-                        setFilters({
-                          [id]: option.label,
-                          chiusura_procedimento_bando: null,
-                          scadenza_bando: null,
-                          ...option.value,
-                        });
-                      } else if (f.multivalued) {
-                        setFilters({
-                          [id]: option.map(({ value }) => value),
-                        });
-                      } else {
-                        setFilters({
-                          [id]: option.value,
-                        });
-                      }
-                    }}
-                    value={filters[f.index]}
-                  />
-                </>
-              )}
-            </Col>
-          );
-        })}
-      </Row>
-    </div>
+  return advanced_filters?.length > 0 ? (
+    <Row className="mb-5">
+      <Col>
+        <div className="advanced-filters p-3 bg-light">
+          <div className="title mb-5">
+            {intl.formatMessage(messages.advanced_filters)}
+          </div>
+          <Row>
+            {advanced_filters.map((f) => {
+              return (
+                <Col xs={12} md={6} key={f.index} className="mb-5">
+                  {f.type === 'DateIndex' && (
+                    <>
+                      <DatetimeWidget
+                        {...f}
+                        value={filters[f.index]}
+                        onChange={onChangeField}
+                        dateOnly={true}
+                      />
+                    </>
+                  )}
+                  {f.type === 'DateRangeIndex' && (
+                    <DateRangeWidget
+                      {...f}
+                      onChange={(f) => {
+                        setFilters({ ...filters, ...f });
+                      }}
+                      value={getDateRangeFilterValue(filters, f, moment)}
+                      dateOnly={true}
+                    />
+                  )}
+
+                  {(f.type === 'array' ||
+                    f.type === 'select' ||
+                    f.type === 'KeywordIndex' ||
+                    f.type === 'FieldIndex') && (
+                    <>
+                      <SelectWidget
+                        {...f}
+                        onChange={(id, value, option) => {
+                          console.log(id, value);
+                          if (!value || value.length == 0) {
+                            if (id === 'stato_bandi') {
+                              setFilters({
+                                ...filters,
+                                chiusura_procedimento_bando: null,
+                                scadenza_bando: null,
+                                [id]: '',
+                              });
+                            } else {
+                              setFilters({ [id]: '' });
+                            }
+                          } else if (id === 'stato_bandi') {
+
+                            setFilters({
+                              ...filters,
+                              [id]: option?[0].label,
+                              chiusura_procedimento_bando: null,
+                              scadenza_bando: null,
+                              ...value[0],
+                            });
+                          } else if (f.multivalued) {
+                            setFilters({
+                              ...filters,
+                              [id]: option.map(({ value }) => value),
+                            });
+                          } else {
+                            setFilters({
+                              ...filters,
+                              [id]: value,
+                            });
+                          }
+                        }}
+                        value={filters[f.index]}
+                      />
+                    </>
+                  )}
+                </Col>
+              );
+            })}
+          </Row>
+        </div>
+      </Col>
+    </Row>
   ) : (
     <></>
   );

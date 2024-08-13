@@ -29,10 +29,6 @@ const GroupsWidget = ({ index, value, label, onChange, items = {} }) => {
         {label[intl.locale]}
       </legend>
       {items.map((item, idx) => {
-        const total = Object.keys(item.items).reduce(
-          (acc, k) => (acc = acc + item.items[k]),
-          0,
-        );
         return (
           <FormGroup check key={item.id}>
             <Input
@@ -55,7 +51,7 @@ const GroupsWidget = ({ index, value, label, onChange, items = {} }) => {
                   className="me-1"
                 />
               )}
-              {item.label[intl.locale]} ({total})
+              {item.label[intl.locale]}
             </Label>
           </FormGroup>
         );

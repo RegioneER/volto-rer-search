@@ -111,10 +111,38 @@ const getSearchParamsURL = ({
   );
 };
 
+const clearAdvancedFilters = (facets = {}, filters = {}) => {
+  let newFilters = { ...filters };
+  let advanced_filters_keys = facets
+    .filter((f) => f.index === 'group')?.[0]
+    .items?.filter((i) => i.advanced_filters?.length > 0)
+    .reduce((acc, val) => {
+      acc = [
+        ...acc,
+        ...val.advanced_filters
+          .filter((a) => a.index != undefined)
+          ?.map((f) => f.index),
+      ];
+      return acc;
+    }, []);
+
+  Object.keys(filters).forEach((f) => {
+    if (f.endsWith('_bando')) {
+      advanced_filters_keys.push(f);
+    }
+  });
+
+  advanced_filters_keys.forEach((k) => {
+    delete newFilters[k];
+  });
+
+  return newFilters;
+};
 const utils = {
   defaultOptions,
   getSearchParamsURL,
   getBaseUrl,
+  clearAdvancedFilters,
 };
 
 export default utils;

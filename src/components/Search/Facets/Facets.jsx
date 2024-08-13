@@ -12,7 +12,7 @@ import {
   DateRangeWidget,
 } from 'volto-rer-search/components/Search';
 import { getDateRangeFilterValue } from 'volto-rer-search/helpers';
-
+import SearchUtils from 'volto-rer-search/components/Search/utils';
 import './facets.scss';
 
 const Facets = ({ filters = {}, setFilters, path, moment: momentlib }) => {
@@ -22,7 +22,8 @@ const Facets = ({ filters = {}, setFilters, path, moment: momentlib }) => {
   moment.locale(intl.locale);
 
   const onChangeField = (field, value) => {
-    setFilters({ ...filters, [field]: value });
+    const newFilters = SearchUtils.clearAdvancedFilters(facets, filters);
+    setFilters({ ...newFilters, [field]: value });
   };
 
   return (

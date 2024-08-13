@@ -196,7 +196,7 @@ const DateRangeWidget = (props) => {
   } = props;
   const id = index;
   const { DateRangePicker } = reactDates;
-  console.log('value', value);
+
   const moment = momentlib.default;
   moment.locale(intl.locale);
 
@@ -295,8 +295,6 @@ const DateRangeWidget = (props) => {
         };
       }
     }
-
-    console.log(v);
 
     onChange(v);
   };

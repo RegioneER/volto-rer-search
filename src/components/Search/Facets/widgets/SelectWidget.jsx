@@ -19,14 +19,11 @@ const SelectWidget = ({
   multivalued = true,
 }) => {
   const intl = useIntl();
-  const options = Object.keys(items).map((k) => {
-    return { label: k + ' (' + items[k] + ')', value: k };
-  });
 
-  return options?.length > 0 ? (
+  return items?.length > 0 ? (
     <SelectInput
       id={index}
-      value={value?.map((v) => options.filter((o) => o.value === v)[0]) ?? []}
+      value={value?.map((v) => items.filter((o) => o.value === v)[0]) ?? []}
       label={
         <>
           {index === 'Subject' && (
@@ -45,10 +42,15 @@ const SelectWidget = ({
         onChange(
           index,
           opt.map((o) => o.value),
+          opt,
         );
       }}
       placeholder={intl.formatMessage(messages.placeholder)}
-      options={options}
+      options={items.filter((i) =>
+        typeof i.value === 'object'
+          ? Object.keys(i.value).length > 0
+          : i.value.length > 0,
+      )}
       isClearable={true}
       isSearchable={true}
       isMulti={multivalued}
