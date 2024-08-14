@@ -145,10 +145,9 @@ const Search = () => {
   const paramSubject = params?.Subject;
   const [filters, setFilters] = useState({
     ...params,
-    path: params?.path ?? subsite ? baseUrl : '',
+    path: params?.path ? params.path : subsite ? baseUrl : '',
     Subject: typeof paramSubject === 'string' ? [paramSubject] : paramSubject,
   });
-
   const handleQueryPaginationChange = (_e, { activePage }) => {
     window.scrollTo(0, 0);
     setCurrentPage(activePage?.children ?? 1);

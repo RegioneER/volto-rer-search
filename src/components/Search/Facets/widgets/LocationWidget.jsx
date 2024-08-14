@@ -65,7 +65,12 @@ const SitesFilters = ({ filters, setFilters }) => {
     (state) => state.rer_search?.result?.current_site ?? [],
   );
   const index = facet?.index;
-  const value = index ? filters[index] : sites[0].id;
+  const value =
+    index && filters[index]
+      ? filters[index]
+      : path?.length > 0
+      ? ''
+      : current_site;
 
   return sites?.length > 0 ? (
     <>
