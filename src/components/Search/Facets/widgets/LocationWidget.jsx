@@ -102,7 +102,7 @@ const LocationWidget = ({ filters, setFilters, path }) => {
 
   const facets = useSelector((state) => state.rer_search?.result?.facets ?? []);
   let hasPath = true;
-  let hasSites = facets.filter((f = f.type == 'SiteName')).length > 0;
+  let hasSites = facets.filter((f) => f.type == 'SiteName').length > 0;
 
   if (!filters.path || filters.path.length === 0 || !path_infos) {
     hasPath = false;
