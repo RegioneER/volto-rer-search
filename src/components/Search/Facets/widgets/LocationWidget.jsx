@@ -78,7 +78,6 @@ const SitesFilters = ({ filters, setFilters }) => {
               name={item.id}
               type="radio"
               onChange={(e) => {
-                onChange(index, item.id);
                 setFilters({ ...filters, [index]: item.id, path: '' });
               }}
               aria-controls="search-results-region"
