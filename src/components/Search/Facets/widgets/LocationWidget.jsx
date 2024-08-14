@@ -47,57 +47,50 @@ const PathFilters = ({ setFilters, path, path_infos }) => {
 };
 
 const SitesFilters = ({ filters, setFilters }) => {
-  const sites = useSelector((state) => state.rer_search?.result?.sites ?? {});
+  const facet = useSelector(
+    (state) =>
+      state.rer_search?.result?.facets?.filter(
+        (f) => f.type === 'SiteName',
+      )?.[0] ?? null,
+  );
+  const sites = useSelector(
+    (state) =>
+      state.rer_search?.result?.facets?.filter(
+        (f) => f.type === 'SiteName',
+      )?.[0]?.items ?? [],
+  );
+  const { path } = filters;
   const current_site = useSelector(
     (state) => state.rer_search?.result?.current_site ?? [],
   );
+  const index = facet?.index;
+  const value = index ? filters[index] : sites[0].id;
 
-  const { path, site_name } = filters;
-  if (!sites) {
-    return '';
-  }
-
-  const totalResults = sites
-    ? Object.values(sites.values).reduce((acc, site) => acc + site, 0)
-    : 0;
-  const currentResults = sites ? sites.values[current_site] : 0;
-
-  return (
+  return sites?.length > 0 ? (
     <>
-      <FormGroup check>
-        <Input
-          checked={!path && filters.site_name === 'all'}
-          id="site_name"
-          name="site_name"
-          value="all"
-          type="radio"
-          onChange={(e) => {
-            setFilters({ site_name: 'all', path: '' });
-          }}
-          aria-controls="search-results-region"
-        />
-        <Label check htmlFor="site_name">
-          {intl.formatMessage(messages.sites_all_label)} ({totalResults})
-        </Label>
-      </FormGroup>
-
-      <FormGroup check>
-        <Input
-          checked={path ? false : site_name === current_site || !site_name}
-          id="site_name"
-          name="site_name"
-          value={current_site}
-          type="radio"
-          onChange={(e) => {
-            setFilters({ site_name: current_site, path: '' });
-          }}
-          aria-controls="search-results-region"
-        />
-        <Label check htmlFor="site_name">
-          {intl.formatMessage(messages.in_this_site)} ({currentResults || 0})
-        </Label>
-      </FormGroup>
+      {sites.map((item, idx) => {
+        return (
+          <FormGroup check key={'sites' + item.id}>
+            <Input
+              checked={value == item.id}
+              id={item.id}
+              name={item.id}
+              type="radio"
+              onChange={(e) => {
+                onChange(index, item.id);
+                setFilters({ ...filters, [index]: item.id, path: '' });
+              }}
+              aria-controls="search-results-region"
+            />
+            <Label check htmlFor={item.id}>
+              {item.label[intl.locale]}
+            </Label>
+          </FormGroup>
+        );
+      })}
     </>
+  ) : (
+    <></>
   );
 };
 
@@ -109,7 +102,7 @@ const LocationWidget = ({ filters, setFilters, path }) => {
 
   const facets = useSelector((state) => state.rer_search?.result?.facets ?? []);
   let hasPath = true;
-  let hasSites = facets.sites ? true : false;
+  let hasSites = facets.filter((f = f.type == 'SiteName')).length > 0;
 
   if (!filters.path || filters.path.length === 0 || !path_infos) {
     hasPath = false;
