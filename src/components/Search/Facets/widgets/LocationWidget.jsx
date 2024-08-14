@@ -47,6 +47,7 @@ const PathFilters = ({ setFilters, path, path_infos }) => {
 };
 
 const SitesFilters = ({ filters, setFilters }) => {
+  const intl = useIntl();
   const facet = useSelector(
     (state) =>
       state.rer_search?.result?.facets?.filter(
