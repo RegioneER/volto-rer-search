@@ -71,7 +71,6 @@ const GroupConfiguration = ({
         description={intl.formatMessage(messages.label_description)}
         value={item.label}
         onChange={(f, v) => {
-          console.log('onchange', v);
           onChangeFormData(f, JSON.parse(v));
         }}
       />

@@ -1,22 +1,20 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Plone\n"
-"POT-Creation-Date: 2024-08-14T08:44:56.646Z\n"
-"Last-Translator: Plone i18n <plone-i18n@lists.sourceforge.net>\n"
-"Language-Team: Plone i18n <plone-i18n@lists.sourceforge.net>\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"MIME-Version: 1.0\n"
-"Language-Code: en\n"
-"Language-Name: English\n"
-"Preferred-Encodings: utf-8\n"
-"Domain: volto\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language: \n"
+"Language-Team: \n"
+"Content-Type: \n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
 
 #. Default: "Attenzione!"
 #: components/Search/Search
 msgid "Attenzione!"
-msgstr ""
+msgstr "Attention!"
 
 #. Default: "Date"
 #: components/Search/Facets/widgets/DatetimeWidget
@@ -26,22 +24,22 @@ msgstr ""
 #. Default: "Nessun risultato soddisfa la tua ricerca"
 #: components/Search/Search
 msgid "Nessun risultato ottenuto"
-msgstr ""
+msgstr "No results match your search"
 
 #. Default: "Risultati della ricerca"
 #: components/Search/Search
 msgid "Search results"
-msgstr ""
+msgstr "Search results"
 
 #. Default: "Cerca nel sito"
 #: components/Search/Search
 msgid "Search site"
-msgstr ""
+msgstr "Search in site"
 
 #. Default: "Sono occorsi degli errori"
 #: components/Search/Search
 msgid "Sono occorsi degli errori"
-msgstr ""
+msgstr "Some errors occurred"
 
 #. Default: "Time"
 #: components/Search/Facets/widgets/DatetimeWidget
@@ -116,247 +114,247 @@ msgstr ""
 #. Default: "Calendario"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_calendarLabel"
-msgstr ""
+msgstr "Calendar"
 
 #. Default: "Scegli"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_choose"
-msgstr ""
+msgstr "Select"
 
 #. Default: "Cancella la data"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_clearDate"
-msgstr ""
+msgstr "Clear date"
 
 #. Default: "Cancella le date"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_clearDates"
-msgstr ""
+msgstr "Clear dates"
 
 #. Default: "Chiudi"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_closeDatePicker"
-msgstr ""
+msgstr "Close"
 
 #. Default: "Tasto invio"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_enterKey"
-msgstr ""
+msgstr "Enter key"
 
 #. Default: "Tasto Esc"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_escape"
-msgstr ""
+msgstr "Esc key"
 
 #. Default: "Interagisci con il calendario e seleziona le date di inizio e/o fine"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_focusStartDate"
-msgstr ""
+msgstr "Interact with the calendar and select the start and/or end dates"
 
 #. Default: "Chiudi il pannello dei tasti rapidi"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_hideKeyboardShortcutsPanel"
-msgstr ""
+msgstr "Close the Quick Keys panel"
 
 #. Default: "Tasti inizio e fine"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_homeEnd"
-msgstr ""
+msgstr "Start and end buttons"
 
 #. Default: "Via avanti per passare al mese successivo"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_jumpToNextMonth"
-msgstr ""
+msgstr "Go ahead to move on to the next month"
 
 #. Default: "Torna indietro per passare al mese precedente"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_jumpToPrevMonth"
-msgstr ""
+msgstr "Go back to go to the previous month"
 
 #. Default: "Naviga indietro per interagire con il calendario e selezionare una data. Premi il pulsante 'punto interrogativo' per conoscere i tasti rapidi per modificare le date."
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_keyboardBackwardNavigationInstructions"
-msgstr ""
+msgstr "Navigate back to interact with the calendar and select a date. Press the 'question mark' button to learn the hotkeys for changing dates."
 
 #. Default: "Naviga avanti per interagire con il calendario e selezionare una data. Premi il pulsante 'punto interrogativo' per conoscere i tasti rapidi per modificare le date."
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_keyboardForwardNavigationInstructions"
-msgstr ""
+msgstr "Navigate forward to interact with the calendar and select a date. Press the 'question mark' button to learn the hotkeys for changing dates."
 
 #. Default: "Tasti rapidi"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_keyboardShortcuts"
-msgstr ""
+msgstr "Quick keys"
 
 #. Default: "Tasti freccia destra e sinistra"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_leftArrowRightArrow"
-msgstr ""
+msgstr "Left and right arrow keys"
 
 #. Default: "Spostati indietro (sinistra) e avanti (destra) di un giorno."
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_moveFocusByOneDay"
-msgstr ""
+msgstr "Move back (left) and forward (right) one day."
 
 #. Default: "Cambia mese"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_moveFocusByOneMonth"
-msgstr ""
+msgstr "Change month"
 
 #. Default: "Spostati indietro (su) e avanti (giu) di una settimana."
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_moveFocusByOneWeek"
-msgstr ""
+msgstr "Move back (up) and forward (down) one week."
 
 #. Default: "Vai al primo o all'ultimo giorno della settimana"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_moveFocustoStartAndEndOfWeek"
-msgstr ""
+msgstr "Go to the first or last day of the week"
 
 #. Default: "Apri questo pannello."
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_openThisPanel"
-msgstr ""
+msgstr "Open this panel."
 
 #. Default: "Tasti pagina su e giu"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_pageUpPageDown"
-msgstr ""
+msgstr "Page up and down keys"
 
 #. Default: "Punto interrogativo"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_questionMark"
-msgstr ""
+msgstr "Question mark"
 
 #. Default: "Torna al campo di inserimento data"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_returnFocusToInput"
-msgstr ""
+msgstr "Returns to the date entry field"
 
 #. Default: "Seleziona date"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_roleDescription"
-msgstr ""
+msgstr "Select dates"
 
 #. Default: "Seleziona la data evidenziata"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_selectFocusedDate"
-msgstr ""
+msgstr "Select the highlighted date"
 
 #. Default: "Apri il pannello dei tasti rapidi"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_showKeyboardShortcutsPanel"
-msgstr ""
+msgstr "Open the Quick Keys panel"
 
 #. Default: "Tasti freccia su e giu"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "dateRangePicker_upArrowDownArrow"
-msgstr ""
+msgstr "Up and down arrow keys"
 
 #. Default: "Filtri"
 #: components/Search/Search
 msgid "filtersCollapse"
-msgstr ""
+msgstr "Filters"
 
 #. Default: "Trovati {total} risultati."
 #: components/Search/OrderingWidget
 #: components/Search/Search
 msgid "found_n_results"
-msgstr ""
+msgstr "Found {total} results."
 
 #. Default: "seleziona un valore"
 #: components/Search/Facets/widgets/GroupsWidget
 #: components/Search/Facets/widgets/SelectWidget
 msgid "keywordindex_placeholder"
-msgstr ""
+msgstr "select a value"
 
 #. Default: "Ordina per"
 #: components/Search/OrderingWidget
 #: components/Search/Search
 msgid "order_by"
-msgstr ""
+msgstr "Order by"
 
 #. Default: "Dal"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "reresearch_startDate"
-msgstr ""
+msgstr "From"
 
 #. Default: "al"
 #: components/Search/Facets/widgets/DateRangeWidget
 msgid "rersearch_endDate"
-msgstr ""
+msgstr "to"
 
 #. Default: "Cerca"
 #: components/Search/Search
 msgid "search"
-msgstr ""
+msgstr "Search"
 
 #. Default: "Vai ai risultati di ricerca"
 #: components/Search/Search
 msgid "search_skip_to_search_results"
-msgstr ""
+msgstr "Go to search results"
 
 #. Default: "In evidenza"
 #: components/Search/ResultItem/ResultItem
 msgid "searchresult_in_evidence"
-msgstr ""
+msgstr "Highlighted"
 
 #. Default: "ultima modifica"
 #: components/Search/ResultItem/ResultItem
 msgid "searchresult_last_modified"
-msgstr ""
+msgstr "last modified"
 
 #. Default: "pubblicato il"
 #: components/Search/ResultItem/ResultItem
 msgid "searchresult_published_on"
-msgstr ""
+msgstr "published on"
 
 #. Default: "Scadenza partecipazione"
 #: components/Search/ResultItem/ResultItem
 msgid "searchresult_scadenza_bando"
-msgstr ""
+msgstr "Participation deadline"
 
 #. Default: "Risultati simili"
 #: components/Search/ResultItem/ResultItem
 msgid "searchresult_similar_results"
-msgstr ""
+msgstr "Similar results"
 
 #. Default: "Filtra i contenuti con filtri specifici per questo gruppo"
 #: components/Search/Facets/SpecificFilters
 msgid "searchsite_advanced_filters"
-msgstr ""
+msgstr "Filter content with filters specific to this group"
 
 #. Default: "In tutti i siti della Regione"
 #: components/Search/Facets/widgets/LocationWidget
 msgid "searchsite_in_all_sites"
-msgstr ""
+msgstr "In all sites in the Region"
 
 #. Default: "Nella sezione"
 #: components/Search/Facets/widgets/LocationWidget
 msgid "searchsite_in_section"
-msgstr ""
+msgstr "In section"
 
 #. Default: "In questo sito web"
 #: components/Search/Facets/widgets/LocationWidget
 msgid "searchsite_in_this_site"
-msgstr ""
+msgstr "In this web site"
 
 #. Default: "Dove"
 #: components/Search/Facets/widgets/LocationWidget
 msgid "searchsite_where"
-msgstr ""
+msgstr "Where"
 
 #. Default: "Data (prima i più recenti)"
 #: components/Search/OrderingWidget
 #: components/Search/Search
 msgid "sort_on_date"
-msgstr ""
+msgstr "Date (most recent first)"
 
 #. Default: "Rilevanza"
 #: components/Search/OrderingWidget
 #: components/Search/Search
 msgid "sort_on_relevance"
-msgstr ""
+msgstr "Relevance"
 
 #. Default: "Alfabeticamente"
 #: components/Search/OrderingWidget
@@ -366,7 +364,7 @@ msgstr ""
 #. Default: "Alfabeticamente"
 #: components/Search/Search
 msgid "sort_on_title"
-msgstr ""
+msgstr "Alphabetically"
 
 #. Default: "Aggiungi un gruppo"
 #: components/manage/Widgets/TypesGroupingWidget/TypesGroupingWidget

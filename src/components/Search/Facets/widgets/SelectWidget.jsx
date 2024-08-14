@@ -48,8 +48,7 @@ const SelectWidget = ({
         </>
       }
       onChange={(opt) => {
-        console.log(opt);
-        const v = multivalued ? opt.map((o) => o.value) : opt.value;
+        const v = multivalued ? opt.map((o) => o.value) : opt?.value ?? null;
         onChange(index, v, opt);
       }}
       placeholder={intl.formatMessage(messages.placeholder)}

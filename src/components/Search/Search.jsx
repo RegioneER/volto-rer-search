@@ -183,7 +183,7 @@ const Search = () => {
       filters,
       baseUrl,
     };
-    console.log(filters);
+    // console.log(filters);
     const queryString = getSearchParamsURL({
       getObject: true,
       ...par,
@@ -313,52 +313,58 @@ const Search = () => {
                   <div className="searchSpinnerWrapper">
                     <Spinner active />
                   </div>
-                ) : searchResults?.result?.items_total > 0 ? (
+                ) : (
                   <>
                     <SpecificFilters
                       filters={filters}
                       setFilters={setFilters}
                     />
-                    <OrderingWidget
-                      sortOn={sortOn}
-                      setSortOn={setSortOn}
-                      options={SORTING_OPTIONS}
-                      total={searchResults?.result?.items_total}
-                    />
+                    {searchResults?.result?.items_total > 0 ? (
+                      <>
+                        <OrderingWidget
+                          sortOn={sortOn}
+                          setSortOn={setSortOn}
+                          options={SORTING_OPTIONS}
+                          total={searchResults?.result?.items_total}
+                        />
 
-                    <Row>
-                      {searchResults?.result?.items?.map((item) => (
-                        <Col md={12} key={item['@id']} className="p-0">
-                          <ResultItem
-                            item={item}
-                            searchableText={searchableText}
-                            baseUrl={baseUrl}
-                            filters={filters}
+                        <Row>
+                          {searchResults?.result?.items?.map((item) => (
+                            <Col md={12} key={item['@id']} className="p-0">
+                              <ResultItem
+                                item={item}
+                                searchableText={searchableText}
+                                baseUrl={baseUrl}
+                                filters={filters}
+                              />
+                            </Col>
+                          ))}
+                        </Row>
+                        {searchResults?.result?.batching && (
+                          <Pagination
+                            activePage={currentPage}
+                            totalPages={Math.ceil(
+                              (searchResults?.result?.items_total ?? 0) /
+                                config.settings.defaultPageSize,
+                            )}
+                            onPageChange={handleQueryPaginationChange}
                           />
-                        </Col>
-                      ))}
-                    </Row>
-                    {searchResults?.result?.batching && (
-                      <Pagination
-                        activePage={currentPage}
-                        totalPages={Math.ceil(
-                          (searchResults?.result?.items_total ?? 0) /
-                            config.settings.defaultPageSize,
                         )}
-                        onPageChange={handleQueryPaginationChange}
-                      />
+                      </>
+                    ) : searchResults.error ? (
+                      <Alert color="danger">
+                        <strong>
+                          {intl.formatMessage(messages.attenzione)}
+                        </strong>{' '}
+                        {intl.formatMessage(messages.errors_occured)}
+                      </Alert>
+                    ) : (
+                      !searchResults?.hasError &&
+                      searchResults?.result?.items_total === 0 && (
+                        <p>{intl.formatMessage(messages.no_results)}</p>
+                      )
                     )}
                   </>
-                ) : searchResults.error ? (
-                  <Alert color="danger">
-                    <strong>{intl.formatMessage(messages.attenzione)}</strong>{' '}
-                    {intl.formatMessage(messages.errors_occured)}
-                  </Alert>
-                ) : (
-                  !searchResults?.hasError &&
-                  searchResults?.result?.items_total === 0 && (
-                    <p>{intl.formatMessage(messages.no_results)}</p>
-                  )
                 )}
               </div>
             </Col>
