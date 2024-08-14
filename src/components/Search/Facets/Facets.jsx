@@ -38,15 +38,22 @@ const Facets = ({ filters = {}, setFilters, path, moment: momentlib }) => {
               value={filters[f.index]}
             />
           )}
-          {f.type === 'KeywordIndex' && (
+          {/*INDEXES*/}
+          {(f.type === 'KeywordIndex' || f.type === 'array') && (
             <SelectWidget
               {...f}
               onChange={onChangeField}
               value={filters[f.index]}
             />
           )}
-
-          {/*INDEXES*/}
+          {(f.type === 'FieldIndex' || f.type === 'select') && (
+            <SelectWidget
+              {...f}
+              multivalued={false}
+              onChange={onChangeField}
+              value={filters[f.index]}
+            />
+          )}
           {f.type === 'BooleanIndex' && (
             <BooleanWidget
               {...f}
@@ -62,7 +69,6 @@ const Facets = ({ filters = {}, setFilters, path, moment: momentlib }) => {
               dateOnly={true}
             />
           )}
-
           {f.type === 'DateRangeIndex' && (
             <DateRangeWidget
               {...f}

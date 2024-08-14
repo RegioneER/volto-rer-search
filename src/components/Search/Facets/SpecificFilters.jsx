@@ -74,8 +74,10 @@ const SpecificFilters = ({ filters = {}, setFilters, moment: momentlib }) => {
                     <>
                       <SelectWidget
                         {...f}
+                        multivalued={
+                          f.type === 'FieldIndex' ? false : f.multivalued
+                        }
                         onChange={(id, value, option) => {
-                          console.log(id, value);
                           if (!value || value.length == 0) {
                             if (id === 'stato_bandi') {
                               setFilters({
@@ -88,13 +90,12 @@ const SpecificFilters = ({ filters = {}, setFilters, moment: momentlib }) => {
                               setFilters({ [id]: '' });
                             }
                           } else if (id === 'stato_bandi') {
-
                             setFilters({
                               ...filters,
-                              [id]: option?[0].label,
+                              [id]: value,
                               chiusura_procedimento_bando: null,
                               scadenza_bando: null,
-                              ...value[0],
+                              ...option.expand_query,
                             });
                           } else if (f.multivalued) {
                             setFilters({

@@ -20,10 +20,19 @@ const SelectWidget = ({
 }) => {
   const intl = useIntl();
 
+  let selectValue = [];
+  if (multivalued) {
+    selectValue =
+      value?.map((v) => items.filter((o) => o.value === v)[0]) ?? [];
+  } else {
+    if (value?.length > 0) {
+      selectValue = items.filter((o) => o.value === value);
+    }
+  }
   return items?.length > 0 ? (
     <SelectInput
       id={index}
-      value={value?.map((v) => items.filter((o) => o.value === v)[0]) ?? []}
+      value={selectValue}
       label={
         <>
           {index === 'Subject' && (
@@ -39,11 +48,9 @@ const SelectWidget = ({
         </>
       }
       onChange={(opt) => {
-        onChange(
-          index,
-          opt.map((o) => o.value),
-          opt,
-        );
+        console.log(opt);
+        const v = multivalued ? opt.map((o) => o.value) : opt.value;
+        onChange(index, v, opt);
       }}
       placeholder={intl.formatMessage(messages.placeholder)}
       options={items.filter((i) =>

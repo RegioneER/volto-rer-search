@@ -66,6 +66,12 @@ const getSearchParamsURL = ({
   let _filters = { ...filters };
   delete _filters.path;
 
+  //remove null properties
+  Object.keys(_filters).forEach(
+    (k) =>
+      (_filters[k] == null || _filters[k] == undefined) && delete _filters[k],
+  );
+
   //per la vera chiamata al BE
   if (getObject) {
     let obj = {
