@@ -255,12 +255,12 @@ const DateRangeWidget = (props) => {
           range: 'min',
           query: start,
         };
-        if (end) {
-          v[index_start] = {
-            range: 'min:max',
-            query: [start, end],
-          };
-        }
+        // if (end) {
+        //   v[index_start] = {
+        //     range: 'min:max',
+        //     query: [start, end],
+        //   };
+        // }
       }
 
       if (end) {
@@ -268,12 +268,12 @@ const DateRangeWidget = (props) => {
           range: 'max',
           query: end,
         };
-        if (start) {
-          v[index_end] = {
-            range: 'min:max',
-            query: [start, end],
-          };
-        }
+        // if (start) {
+        //   v[index_end] = {
+        //     range: 'min:max',
+        //     query: [start, end],
+        //   };
+        // }
       }
     }
     //se viene passato un solo indice su cui fare la ricerca

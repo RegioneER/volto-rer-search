@@ -25,8 +25,8 @@ const SpecificFilters = ({ filters = {}, setFilters, moment: momentlib }) => {
   const advanced_filters = useSelector((state) => {
     if (filters.group) {
       return state.rer_search?.result?.facets
-        .filter((f) => f.index === 'group')?.[0]
-        .items?.filter((i) => i.id == filters.group)?.[0].advanced_filters;
+        ?.filter((f) => f.index === 'group')?.[0]
+        ?.items?.filter((i) => i.id == filters.group)?.[0]?.advanced_filters;
     }
     return [];
   });
