@@ -15,7 +15,7 @@ const SelectWidget = ({
   value = [],
   label,
   onChange,
-  items = {},
+  items = [],
   multivalued = true,
 }) => {
   const intl = useIntl();

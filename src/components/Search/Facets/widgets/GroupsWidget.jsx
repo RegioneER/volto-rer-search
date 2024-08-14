@@ -13,7 +13,7 @@ const messages = defineMessages({
   },
 });
 
-const GroupsWidget = ({ index, value, label, onChange, items = {} }) => {
+const GroupsWidget = ({ index, value, label, onChange, items = [] }) => {
   const intl = useIntl();
 
   return items?.length > 0 ? (
