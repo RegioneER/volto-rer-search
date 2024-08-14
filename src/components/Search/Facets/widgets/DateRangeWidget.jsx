@@ -325,6 +325,7 @@ const DateRangeWidget = (props) => {
           hideKeyboardShortcutsPanel={true}
           showClearDates
           phrases={getDateRangePickerPhrases(intl)}
+          isOutsideRange={() => false}
           customArrowIcon={
             <Icon
               icon="it-arrow-right"
