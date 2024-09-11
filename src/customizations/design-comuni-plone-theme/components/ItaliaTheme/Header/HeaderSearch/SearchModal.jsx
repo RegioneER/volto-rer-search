@@ -67,6 +67,7 @@ const SearchModal = ({ closeModal, show }) => {
   const inputRef = React.useRef(null);
 
   const baseUrl = getBaseUrl(subsite, intl.locale);
+
   const searchURL = getSearchParamsURL({
     searchableText,
     //filters: { path: baseUrl },

@@ -30,13 +30,12 @@ import {
 } from 'design-react-kit';
 import { useLocation, useHistory } from 'react-router-dom';
 
-import { Helmet, flattenToAppURL } from '@plone/volto/helpers';
+import { Helmet, flattenToAppURL, BodyClass } from '@plone/volto/helpers';
 import { resetSubsite } from 'volto-subsites';
 
 import {
   Pagination,
   Icon,
-  RemoveBodyClass,
 } from 'design-comuni-plone-theme/components/ItaliaTheme';
 import { TextInput } from 'design-comuni-plone-theme/components';
 import { rerSearch } from 'volto-rer-search/actions';
@@ -183,18 +182,20 @@ const Search = () => {
       baseUrl,
     };
     // console.log(filters);
+
     const queryString = getSearchParamsURL({
       getObject: true,
       ...par,
     });
 
-    !isEmpty(searchResults.result) &&
+    if (!isEmpty(searchResults.result)) {
       history.push(
         getSearchParamsURL({
           ...par,
-          searchableText,
         }),
       );
+    }
+
     dispatch(rerSearch(queryString));
   };
 
@@ -371,7 +372,7 @@ const Search = () => {
         </Container>
       </div>
       {/*force remove body class for subsite search pages*/}
-      <RemoveBodyClass className="cms-ui" />
+      <BodyClass className="cms-ui" remove={true} />
     </>
   );
 };

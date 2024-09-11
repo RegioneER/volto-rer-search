@@ -48,7 +48,11 @@ const getSearchParamsURL = ({
   }
 
   let text = searchableText
-    ? { SearchableText: searchableText.toLowerCase() }
+    ? {
+        SearchableText: searchableText
+          .toLowerCase()
+          .replace('*', getObject ? '*' : ''),
+      }
     : null;
 
   baseUrl += '/search';
@@ -75,10 +79,10 @@ const getSearchParamsURL = ({
   //per la vera chiamata al BE
   if (getObject) {
     let obj = {
-      ...(text ?? {}),
-      ...(pathQuery ?? {}),
       ...sortOn,
       ..._filters,
+      ...(text ?? {}),
+      ...(pathQuery ?? {}),
       b_start: b_start,
       metadata_fields: [
         'Subject',
@@ -107,9 +111,9 @@ const getSearchParamsURL = ({
     '?' +
     qs.stringify(
       {
-        ...(text ?? {}),
         ...sortOn,
         ...dotify(_filters), //comprende anche path, quindi non serve pathQuery qui
+        ...(text ?? {}),
       },
       // { skipNull: true },
     ) +
