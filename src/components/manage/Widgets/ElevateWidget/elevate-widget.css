@@ -1,0 +1,74 @@
+.elevate-widget .ui.menu.elevate-settings-menu .item,
+.cms-ui .elevate-widget .ui.menu.elevate-settings-menu .item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  margin: 0px 0px 0px 1px !important;
+  width: 100%;
+  cursor: pointer;
+}
+.elevate-widget .ui.menu.elevate-settings-menu .item:hover,
+.cms-ui .elevate-widget .ui.menu.elevate-settings-menu .item:hover {
+  background-color: #fafafa !important;
+}
+
+.elevate-widget .ui.menu.elevate-settings-menu .item span,
+.cms-ui .elevate-widget .ui.menu.elevate-settings-menu .item span {
+  margin-left: 0.5rem;
+  text-align: start;
+}
+
+.elevate-widget .ui.menu.elevate-settings-menu .item button.ui.button,
+.cms-ui
+  .elevate-widget
+  .ui.menu.elevate-settings-menu
+  .item
+  button.ui.button {
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.elevate-widget
+  .ui.menu.elevate-settings-menu
+  .item
+  button.ui.button
+  i.icon,
+.cms-ui
+  .elevate-widget
+  .ui.menu.elevate-settings-menu
+  .item
+  button.ui.button
+  i.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(90deg);
+}
+
+.elevate-widget .ui.menu.elevate-settings-menu .item span,
+.cms-ui .elevate-widget .ui.menu.elevate-settings-menu .item span {
+  display: inline-block;
+  min-width: 3rem;
+  flex: 1;
+}
+
+.elevate-widget .ui.menu.elevate-settings-menu .item span,
+.cms-ui .elevate-widget .ui.menu.elevate-settings-menu .item span {
+  padding-left: 0.5rem;
+}
+
+.elevate-widget .delete-item-wrapper,
+.cms-ui .elevate-widget .delete-item-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+button.delete-item,
+.cms-ui button.delete-item {
+  display: inline-block;
+  flex-grow: 0;
+  align-self: self-start;
+}

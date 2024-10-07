@@ -3,6 +3,7 @@
 import {
   TypesGroupingWidget,
   AvailableIndexesWidget,
+  ElevateWidget,
 } from 'volto-rer-search/components';
 
 import { rerSearch } from 'volto-rer-search/actions';
@@ -36,6 +37,7 @@ const applyConfig = (config) => {
     ...config.widgets.id,
     types_grouping: TypesGroupingWidget,
     available_indexes: AvailableIndexesWidget,
+    elevate_schema: ElevateWidget,
   };
 
   config.addonReducers = {
