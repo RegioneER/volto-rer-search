@@ -60,7 +60,9 @@ const Marker = ({ text = '', highlight = '' }) => {
     <>
       {parts.map((part, i) =>
         part.match(regex) ? (
-          <mark className="highlighted-text">{part}</mark>
+          <mark key={i} className="highlighted-text">
+            {part}
+          </mark>
         ) : (
           part
         ),

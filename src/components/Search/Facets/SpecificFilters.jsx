@@ -78,36 +78,37 @@ const SpecificFilters = ({ filters = {}, setFilters, moment: momentlib }) => {
                           f.type === 'FieldIndex' ? false : f.multivalued
                         }
                         onChange={(id, value, option) => {
+                          let newFilters = { ...filters };
                           if (!value || value.length == 0) {
-                            if (id === 'stato_bandi') {
-                              setFilters({
-                                ...filters,
-                                chiusura_procedimento_bando: null,
-                                scadenza_bando: null,
-                                [id]: '',
-                              });
-                            } else {
-                              setFilters({ [id]: '' });
+                            if (id in newFilters) {
+                              delete newFilters[id];
                             }
-                          } else if (id === 'stato_bandi') {
-                            setFilters({
-                              ...filters,
-                              [id]: value,
-                              chiusura_procedimento_bando: null,
-                              scadenza_bando: null,
-                              ...option.expand_query,
-                            });
-                          } else if (f.multivalued) {
-                            setFilters({
-                              ...filters,
-                              [id]: option.map(({ value }) => value),
-                            });
                           } else {
-                            setFilters({
-                              ...filters,
-                              [id]: value,
-                            });
+                            if (f.multivalued) {
+                              newFilters = {
+                                ...newFilters,
+                                [id]: option.map(({ value }) => value),
+                              };
+                            } else {
+                              newFilters = {
+                                ...newFilters,
+                                [id]: value,
+                              };
+                            }
                           }
+                          // cleanup empty values
+                          Object.entries(newFilters).forEach(([key, value]) => {
+                            if (
+                              value === null ||
+                              value === undefined ||
+                              value === '' ||
+                              value === 0 ||
+                              Number.isNaN(value)
+                            ) {
+                              delete newFilters[key];
+                            }
+                          });
+                          setFilters(newFilters);
                         }}
                         value={filters[f.index]}
                       />
