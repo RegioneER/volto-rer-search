@@ -15,7 +15,13 @@ import { getDateRangeFilterValue } from 'volto-rer-search/helpers';
 import SearchUtils from 'volto-rer-search/components/Search/utils';
 import './facets.scss';
 
-const Facets = ({ filters = {}, setFilters, path, moment: momentlib }) => {
+const Facets = ({
+  filters = {},
+  setFilters,
+  setCurrentPage,
+  path,
+  moment: momentlib,
+}) => {
   const intl = useIntl();
   const facets = useSelector((state) => state.rer_search?.result?.facets ?? []);
   const moment = momentlib.default;
@@ -23,7 +29,13 @@ const Facets = ({ filters = {}, setFilters, path, moment: momentlib }) => {
 
   const onChangeField = (field, value) => {
     const newFilters = SearchUtils.clearAdvancedFilters(facets, filters);
+    console.log('field: ', field);
+    console.log('newFilters: ', newFilters);
+    if ('b_start' in newFilters) {
+      delete newFilters.b_size;
+    }
     setFilters({ ...newFilters, [field]: value });
+    setCurrentPage(0);
   };
 
   return (

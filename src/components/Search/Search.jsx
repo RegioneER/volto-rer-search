@@ -297,7 +297,11 @@ const Search = () => {
                 className="d-lg-block d-xl-block"
                 id="categoryCollapse"
               >
-                <Facets filters={filters} setFilters={setFilters} />
+                <Facets
+                  filters={filters}
+                  setFilters={setFilters}
+                  setCurrentPage={setCurrentPage}
+                />
               </Collapse>
             </aside>
 
