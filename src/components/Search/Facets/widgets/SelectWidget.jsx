@@ -19,9 +19,11 @@ const SelectWidget = ({
   multivalued = true,
 }) => {
   const intl = useIntl();
-
   let selectValue = [];
   if (multivalued) {
+    if (!Array.isArray(value)) {
+      value = [value];
+    }
     selectValue =
       value?.map((v) => items.filter((o) => o.value === v)[0]) ?? [];
   } else {
