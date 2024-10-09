@@ -165,115 +165,112 @@ const TypesGroupingWidget = ({
             <Grid.Column width="12" className="types-grouping-widget">
               <div id="types-grouping">
                 <Segment>
-                  {groups.length ? (
-                    <Grid>
-                      <Grid.Column width={4}>
-                        <Menu
-                          fluid
-                          vertical
-                          tabular
-                          className="types-grouping-menu"
-                          role="region"
-                          aria-label={intl.formatMessage(
-                            messages.group_selection,
-                          )}
-                        >
-                          {groups?.map((item, idx) => {
-                            const itemTitle =
-                              intl.formatMessage(messages.group) +
-                              ' ' +
-                              (idx + 1) +
-                              ' - ' +
-                              (item.label?.it?.length > 0
-                                ? item.label.it
-                                : intl.formatMessage(messages.no_title));
-                            return (
-                              <Menu.Item
-                                key={`group-item-${idx}`}
-                                name={itemTitle}
+                  <Grid>
+                    <Grid.Column width={4}>
+                      <Menu
+                        fluid
+                        vertical
+                        tabular
+                        className="types-grouping-menu"
+                        role="region"
+                        aria-label={intl.formatMessage(
+                          messages.group_selection,
+                        )}
+                      >
+                        {groups?.map((item, idx) => {
+                          const itemTitle =
+                            intl.formatMessage(messages.group) +
+                            ' ' +
+                            (idx + 1) +
+                            ' - ' +
+                            (item.label?.it?.length > 0
+                              ? item.label.it
+                              : intl.formatMessage(messages.no_title));
+                          return (
+                            <Menu.Item
+                              key={`group-item-${idx}`}
+                              name={itemTitle}
+                              active={activeItem === idx}
+                              onClick={() => setActiveItem(idx)}
+                              aria-controls={'group-config-content'}
+                              as="button"
+                              aria-expanded={activeItem === idx}
+                              aria-label={itemTitle}
+                            >
+                              <Button.Group
+                                vertical
+                                className="move-buttons"
+                                key={`group-item-${idx}-buttons`}
+                                id={`group-item-${idx}-buttons`}
+                                name={item.title}
                                 active={activeItem === idx}
                                 onClick={() => setActiveItem(idx)}
-                                aria-controls={'group-config-content'}
-                                as="button"
-                                aria-expanded={activeItem === idx}
                                 aria-label={itemTitle}
                               >
-                                <Button.Group
-                                  vertical
-                                  className="move-buttons"
-                                  key={`group-item-${idx}-buttons`}
-                                  id={`group-item-${idx}-buttons`}
-                                  name={item.title}
-                                  active={activeItem === idx}
-                                  onClick={() => setActiveItem(idx)}
-                                  aria-label={itemTitle}
-                                >
-                                  <Button
-                                    disabled={idx === 0}
-                                    size="tiny"
-                                    icon={<Icon name="arrow left" />}
-                                    title={intl.formatMessage(
-                                      messages.moveItemUp,
-                                    )}
-                                    onClick={(e) => moveItem(e, idx, 'up')}
-                                  />
-                                  <Button
-                                    disabled={idx === groups.length - 1}
-                                    size="tiny"
-                                    icon={<Icon name="arrow right" />}
-                                    title={intl.formatMessage(
-                                      messages.moveItemDown,
-                                    )}
-                                    onClick={(e) =>
-                                      moveItem(e, activeFooter, idx, 'down')
-                                    }
-                                  />
-                                </Button.Group>
-                                <span>{itemTitle}</span>
-                              </Menu.Item>
-                            );
-                          })}
-                          <Menu.Item
-                            as={'button'}
-                            name={intl.formatMessage(messages.addItem)}
-                            aria-label={intl.formatMessage(messages.addItem)}
-                            onClick={(e) => addItem(e)}
-                          >
-                            <Icon name="plus" />
-                          </Menu.Item>
-                        </Menu>
-                      </Grid.Column>
-                      <Grid.Column stretched width={8}>
-                        <div
-                          id="group-config-content"
-                          role="region"
-                          aria-label={intl.formatMessage(
-                            messages.group_content,
-                          )}
+                                <Button
+                                  disabled={idx === 0}
+                                  size="tiny"
+                                  icon={<Icon name="arrow left" />}
+                                  title={intl.formatMessage(
+                                    messages.moveItemUp,
+                                  )}
+                                  onClick={(e) => moveItem(e, idx, 'up')}
+                                />
+                                <Button
+                                  disabled={idx === groups.length - 1}
+                                  size="tiny"
+                                  icon={<Icon name="arrow right" />}
+                                  title={intl.formatMessage(
+                                    messages.moveItemDown,
+                                  )}
+                                  onClick={(e) =>
+                                    moveItem(e, activeFooter, idx, 'down')
+                                  }
+                                />
+                              </Button.Group>
+                              <span>{itemTitle}</span>
+                            </Menu.Item>
+                          );
+                        })}
+                        <Menu.Item
+                          as={'button'}
+                          name={intl.formatMessage(messages.addItem)}
+                          aria-label={intl.formatMessage(messages.addItem)}
+                          onClick={(e) => addItem(e)}
                         >
-                          {groups.length && groups[activeItem] ? (
-                            <GroupConfiguration
-                              index={activeItem}
-                              item={groups[activeItem]}
-                              onChange={(group) => {
-                                let new_groups = [...groups];
-                                new_groups[activeItem] = group;
+                          <Icon name="plus" />
+                        </Menu.Item>
+                      </Menu>
+                    </Grid.Column>
+                    <Grid.Column stretched width={8}>
+                      <div
+                        id="group-config-content"
+                        role="region"
+                        aria-label={intl.formatMessage(messages.group_content)}
+                      >
+                        {groups.length && groups[activeItem] ? (
+                          <GroupConfiguration
+                            index={activeItem}
+                            item={groups[activeItem]}
+                            onChange={(group) => {
+                              let new_groups = [...groups];
+                              new_groups[activeItem] = group;
 
-                                handleChange(new_groups);
-                              }}
-                              deleteItem={(e) => removeItem(e, activeItem)}
-                              portal_types={portal_types}
-                              advanced_filters={advanced_filters}
-                            />
-                          ) : (
-                            <span>
-                              {intl.formatMessage(messages.noActiveGroups)}
-                            </span>
-                          )}
-                        </div>
-                      </Grid.Column>
-                    </Grid>
-                  ) : (
+                              handleChange(new_groups);
+                            }}
+                            deleteItem={(e) => removeItem(e, activeItem)}
+                            portal_types={portal_types}
+                            advanced_filters={advanced_filters}
+                          />
+                        ) : (
+                          <span>
+                            {intl.formatMessage(messages.noActiveGroups)}
+                          </span>
+                        )}
+                      </div>
+                    </Grid.Column>
+                  </Grid>
+                  {groups.length == 0 && (
                     <span>{intl.formatMessage(messages.no_groups)}</span>
                   )}
                 </Segment>

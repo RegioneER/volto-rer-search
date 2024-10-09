@@ -141,116 +141,113 @@ const AvailableIndexesWidget = ({
             <Grid.Column width="12" className="available-indexes-widget">
               <div id="available-indexes">
                 <Segment>
-                  {items.length ? (
-                    <Grid>
-                      <Grid.Column width={4}>
-                        <Menu
-                          fluid
-                          vertical
-                          tabular
-                          className="available-indexes-menu"
-                          role="region"
-                          aria-label={intl.formatMessage(
-                            messages.index_selection,
-                          )}
-                        >
-                          {items?.map((item, idx) => {
-                            const itemTitle =
-                              intl.formatMessage(messages.index) +
-                              ' ' +
-                              (idx + 1) +
-                              ' - ' +
-                              (item.label?.it?.length > 0
-                                ? item.label?.it
-                                : intl.formatMessage(messages.no_title));
-                            return (
-                              <Menu.Item
-                                key={`index-item-${idx}`}
-                                name={itemTitle}
+                  <Grid>
+                    <Grid.Column width={4}>
+                      <Menu
+                        fluid
+                        vertical
+                        tabular
+                        className="available-indexes-menu"
+                        role="region"
+                        aria-label={intl.formatMessage(
+                          messages.index_selection,
+                        )}
+                      >
+                        {items?.map((item, idx) => {
+                          const itemTitle =
+                            intl.formatMessage(messages.index) +
+                            ' ' +
+                            (idx + 1) +
+                            ' - ' +
+                            (item.label?.it?.length > 0
+                              ? item.label?.it
+                              : intl.formatMessage(messages.no_title));
+                          return (
+                            <Menu.Item
+                              key={`index-item-${idx}`}
+                              name={itemTitle}
+                              active={activeItem === idx}
+                              onClick={() => setActiveItem(idx)}
+                              aria-controls={'index-config-content'}
+                              as="button"
+                              aria-expanded={activeItem === idx}
+                              aria-label={itemTitle}
+                            >
+                              <Button.Group
+                                vertical
+                                className="move-buttons"
+                                key={`index-item-${idx}-buttons`}
+                                id={`index-item-${idx}-buttons`}
+                                name={item.title}
                                 active={activeItem === idx}
                                 onClick={() => setActiveItem(idx)}
-                                aria-controls={'index-config-content'}
-                                as="button"
-                                aria-expanded={activeItem === idx}
                                 aria-label={itemTitle}
                               >
-                                <Button.Group
-                                  vertical
-                                  className="move-buttons"
-                                  key={`index-item-${idx}-buttons`}
-                                  id={`index-item-${idx}-buttons`}
-                                  name={item.title}
-                                  active={activeItem === idx}
-                                  onClick={() => setActiveItem(idx)}
-                                  aria-label={itemTitle}
-                                >
-                                  <Button
-                                    disabled={idx === 0}
-                                    size="tiny"
-                                    icon={<Icon name="arrow left" />}
-                                    title={intl.formatMessage(
-                                      messages.moveItemUp,
-                                    )}
-                                    onClick={(e) => moveItem(e, idx, 'up')}
-                                  />
-                                  <Button
-                                    disabled={idx === items.length - 1}
-                                    size="tiny"
-                                    icon={<Icon name="arrow right" />}
-                                    title={intl.formatMessage(
-                                      messages.moveItemDown,
-                                    )}
-                                    onClick={(e) =>
-                                      moveItem(e, activeFooter, idx, 'down')
-                                    }
-                                  />
-                                </Button.Group>
-                                <span>{itemTitle}</span>
-                              </Menu.Item>
-                            );
-                          })}
-                          <Menu.Item
-                            as={'button'}
-                            name={intl.formatMessage(messages.addItem)}
-                            aria-label={intl.formatMessage(messages.addItem)}
-                            onClick={(e) => addItem(e)}
-                          >
-                            <Icon name="plus" />
-                          </Menu.Item>
-                        </Menu>
-                      </Grid.Column>
-                      <Grid.Column stretched width={8}>
-                        <div
-                          id="index-config-content"
-                          role="region"
-                          aria-label={intl.formatMessage(
-                            messages.index_content,
-                          )}
+                                <Button
+                                  disabled={idx === 0}
+                                  size="tiny"
+                                  icon={<Icon name="arrow left" />}
+                                  title={intl.formatMessage(
+                                    messages.moveItemUp,
+                                  )}
+                                  onClick={(e) => moveItem(e, idx, 'up')}
+                                />
+                                <Button
+                                  disabled={idx === items.length - 1}
+                                  size="tiny"
+                                  icon={<Icon name="arrow right" />}
+                                  title={intl.formatMessage(
+                                    messages.moveItemDown,
+                                  )}
+                                  onClick={(e) =>
+                                    moveItem(e, activeFooter, idx, 'down')
+                                  }
+                                />
+                              </Button.Group>
+                              <span>{itemTitle}</span>
+                            </Menu.Item>
+                          );
+                        })}
+                        <Menu.Item
+                          as={'button'}
+                          name={intl.formatMessage(messages.addItem)}
+                          aria-label={intl.formatMessage(messages.addItem)}
+                          onClick={(e) => addItem(e)}
                         >
-                          {items.length && items[activeItem] ? (
-                            <IndexConfiguration
-                              key={'index-configuration' + activeItem}
-                              index={activeItem}
-                              item={items[activeItem]}
-                              onChange={(el) => {
-                                let new_items = [...items];
-                                new_items[activeItem] = el;
+                          <Icon name="plus" />
+                        </Menu.Item>
+                      </Menu>
+                    </Grid.Column>
+                    <Grid.Column stretched width={8}>
+                      <div
+                        id="index-config-content"
+                        role="region"
+                        aria-label={intl.formatMessage(messages.index_content)}
+                      >
+                        {items.length && items[activeItem] ? (
+                          <IndexConfiguration
+                            key={'index-configuration' + activeItem}
+                            index={activeItem}
+                            item={items[activeItem]}
+                            onChange={(el) => {
+                              let new_items = [...items];
+                              new_items[activeItem] = el;
 
-                                handleChange(new_items);
-                              }}
-                              deleteItem={(e) => removeItem(e, activeItem)}
-                              indexes={indexes}
-                              key={'index-config' + activeItem}
-                            />
-                          ) : (
-                            <span>
-                              {intl.formatMessage(messages.noActiveIndexes)}
-                            </span>
-                          )}
-                        </div>
-                      </Grid.Column>
-                    </Grid>
-                  ) : (
+                              handleChange(new_items);
+                            }}
+                            deleteItem={(e) => removeItem(e, activeItem)}
+                            indexes={indexes}
+                            key={'index-config' + activeItem}
+                          />
+                        ) : (
+                          <span>
+                            {intl.formatMessage(messages.noActiveIndexes)}
+                          </span>
+                        )}
+                      </div>
+                    </Grid.Column>
+                  </Grid>
+                  {items.length == 0 && (
                     <span>{intl.formatMessage(messages.no_items)}</span>
                   )}
                 </Segment>
