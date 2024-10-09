@@ -10,10 +10,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIntl, defineMessages } from 'react-intl';
-import { values, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import cx from 'classnames';
-import qs from 'query-string';
-import moment from 'moment';
 
 import {
   Container,
@@ -140,11 +138,16 @@ const Search = () => {
   const [currentPage, setCurrentPage] = useState(
     params?.b_start ? params.b_start / config.settings.defaultPageSize + 1 : 1,
   );
-
   const paramSubject = params?.Subject;
+
+  let paramPath = params?.path;
+
+  if (!paramPath && subsite && !('site_name' in params)) {
+    paramPath = getBaseUrl(subsite, currentLang);
+  }
   const [filters, setFilters] = useState({
     ...params,
-    path: params?.path ? params.path : subsite ? baseUrl : '',
+    path: paramPath,
     Subject: typeof paramSubject === 'string' ? [paramSubject] : paramSubject,
   });
   const handleQueryPaginationChange = (_e, { activePage }) => {
@@ -181,7 +184,6 @@ const Search = () => {
       filters,
       baseUrl,
     };
-    // console.log(filters);
 
     const queryString = getSearchParamsURL({
       getObject: true,

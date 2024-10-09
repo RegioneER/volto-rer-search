@@ -3,6 +3,10 @@ import { useSelector } from 'react-redux';
 import { useIntl, defineMessages } from 'react-intl';
 import { FormGroup, Input, Label } from 'design-react-kit';
 import { Icon } from 'design-comuni-plone-theme/components/ItaliaTheme';
+import SearchUtils from 'volto-rer-search/components/Search/utils';
+import { isEmpty } from 'lodash';
+
+const { getBaseUrl } = SearchUtils;
 
 const messages = defineMessages({
   where: {
@@ -23,14 +27,13 @@ const messages = defineMessages({
   },
 });
 
-const PathFilters = ({ setFilters, path, path_infos }) => {
+const PathFilters = ({ setFilters, path, path_infos, site_name }) => {
   const intl = useIntl();
   const { root, path_title } = path_infos;
-
   return (
     <FormGroup check>
       <Input
-        checked={path !== root}
+        checked={path !== root && !site_name}
         id="currentpath"
         name="path"
         type="radio"
@@ -104,18 +107,31 @@ const LocationWidget = ({ filters, setFilters, path }) => {
   const path_infos = useSelector(
     (state) => state.rer_search?.result?.path_infos ?? {},
   );
+  const currentLang = intl.locale;
+  const subsite = useSelector((state) => state.subsite?.data);
+  const baseUrl = getBaseUrl(subsite, currentLang);
 
   const facets = useSelector((state) => state.rer_search?.result?.facets ?? []);
   let hasPath = true;
   let hasSites = facets.filter((f) => f.type == 'SiteName').length > 0;
 
-  if (!filters.path || filters.path.length === 0 || !path_infos) {
+  let filtersPath = filters?.path;
+
+  if (!filtersPath && subsite) {
+    filtersPath = getBaseUrl(subsite, currentLang);
+    if (isEmpty(path_infos)) {
+      path_infos.path_title = subsite.title;
+    }
+  }
+
+  if (!filtersPath || !path_infos) {
     hasPath = false;
   }
 
-  if (!hasPath && !hasSites) {
+  if (!filtersPath && !hasSites) {
     return <></>;
   }
+
   return (
     <fieldset className="filter-item mb-5">
       <legend>
@@ -129,10 +145,11 @@ const LocationWidget = ({ filters, setFilters, path }) => {
         {intl.formatMessage(messages.where)}
       </legend>
 
-      {hasPath && (
+      {filtersPath && (
         <PathFilters
           setFilters={setFilters}
-          path={filters.path}
+          path={filtersPath}
+          site_name={filters.site_name}
           path_infos={path_infos}
         />
       )}

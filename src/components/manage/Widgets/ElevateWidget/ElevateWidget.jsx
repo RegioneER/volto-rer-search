@@ -210,7 +210,6 @@ const TypesGroupingWidget = ({
                               index={activeItem}
                               item={elevate[activeItem]}
                               onChange={(item) => {
-                                console.log(item);
                                 let new_elevate = [...elevate];
                                 new_elevate[activeItem] = item;
 

@@ -29,15 +29,12 @@ const Facets = ({
 
   const onChangeField = (field, value) => {
     const newFilters = SearchUtils.clearAdvancedFilters(facets, filters);
-    console.log('field: ', field);
-    console.log('newFilters: ', newFilters);
     if ('b_start' in newFilters) {
       delete newFilters.b_size;
     }
     setFilters({ ...newFilters, [field]: value });
     setCurrentPage(0);
   };
-
   return (
     <div className="facets">
       <LocationWidget filters={filters} setFilters={setFilters} />

@@ -4,12 +4,9 @@ CUSTOMIZATINOS:
 - nella getSearchParamsURL fatto il lowerCase searchableText per le ricerche con Solr / Matomo
 - added dotify fn
 */
-import mapValues from 'lodash/mapValues';
-import moment from 'moment';
 import qs from 'query-string';
 import { flattenToAppURL } from '@plone/volto/helpers';
 import config from '@plone/volto/registry';
-import { getItemsByPath } from 'design-comuni-plone-theme/helpers';
 import { dotify } from 'volto-rer-search/helpers';
 
 const defaultOptions = {
@@ -41,7 +38,7 @@ const getSearchParamsURL = ({
   let pathQuery = null;
   if (filters?.path?.length > 0) {
     pathQuery = { 'path.query': filters.path };
-  } else if (baseUrl?.length > 0) {
+  } else if (!('site_name' in filters) && baseUrl?.length > 0) {
     pathQuery = {
       'path.query': baseUrl,
     };
@@ -56,16 +53,6 @@ const getSearchParamsURL = ({
     : null;
 
   baseUrl += '/search';
-  // console.log(
-  //   baseUrl +
-  //     '?' +
-  //     qs.stringify({
-  //       ...(text ?? {}),
-  //       ...(pathQuery ?? {}),
-  //       ...sortOn,
-  //       ...filters,
-  //     }),
-  // );
 
   let _filters = { ...filters };
   delete _filters.path;
