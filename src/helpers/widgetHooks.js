@@ -5,12 +5,13 @@ export const usePreventClick = (selector) => {
     e.preventDefault();
   };
   useEffect(() => {
-    document.querySelector(selector).addEventListener('click', preventClick);
-
+    const el = document.querySelector(selector);
+    if (el) {
+      el.addEventListener('click', preventClick);
+    }
     return () => {
-      const item = document.querySelector(selector);
-      if (item) {
-        item.removeEventListener('click', preventClick);
+      if (el) {
+        el.removeEventListener('click', preventClick);
       }
     };
   }, []);
