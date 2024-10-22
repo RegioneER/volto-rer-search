@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useIntl, defineMessages } from 'react-intl';
 import { Row, Col } from 'design-react-kit';
@@ -8,6 +8,7 @@ import {
   SelectWidget,
   DatetimeWidget,
   DateRangeWidget,
+  BooleanWidget,
 } from 'volto-rer-search/components/Search';
 import { getDateRangeFilterValue } from 'volto-rer-search/helpers';
 
@@ -34,7 +35,6 @@ const SpecificFilters = ({ filters = {}, setFilters, moment: momentlib }) => {
   const onChangeField = (field, value) => {
     setFilters({ ...filters, [field]: value });
   };
-
   return advanced_filters?.length > 0 ? (
     <Row className="mb-5">
       <Col>
@@ -70,12 +70,15 @@ const SpecificFilters = ({ filters = {}, setFilters, moment: momentlib }) => {
                   {(f.type === 'array' ||
                     f.type === 'select' ||
                     f.type === 'KeywordIndex' ||
-                    f.type === 'FieldIndex') && (
+                    f.type === 'FieldIndex' ||
+                    f.type === 'BooleanIndex') && (
                     <>
                       <SelectWidget
                         {...f}
                         multivalued={
-                          f.type === 'FieldIndex' ? false : f.multivalued
+                          f.type === 'FieldIndex' || f.type === 'BooleanIndex'
+                            ? false
+                            : f.multivalued
                         }
                         onChange={(id, value, option) => {
                           let newFilters = { ...filters };
