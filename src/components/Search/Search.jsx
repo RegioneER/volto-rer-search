@@ -177,14 +177,18 @@ const Search = () => {
   );
 
   const doSearch = () => {
+    // ricerca in testata add a custom parameter that need to be converted
+    if (filters.custom_path) {
+      filters.path = filters.custom_path;
+      delete filters.custom_path;
+    }
     const par = {
-      searchableText: searchableText?.length > 0 ? `${searchableText}*` : '',
+      searchableText: searchableText,
       sortOn: SORTING_OPTIONS[sortOn],
       currentPage,
       filters,
       baseUrl,
     };
-
     const queryString = getSearchParamsURL({
       getObject: true,
       ...par,
