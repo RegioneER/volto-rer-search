@@ -152,7 +152,7 @@ const ResultItem = ({ item, searchableText, baseUrl, filters }) => {
       <CardBody className="shadow-sm px-4 pt-4 pb-4 rounded">
         {/* icona + data + path */}
         <CardCategory iconName={getIcon(item)} title={getItemTypeLabel(item)}>
-          {!inEvidence && <DateAndPosition item={item} />}
+          <DateAndPosition item={item} />
         </CardCategory>
         <CardTitle tag="h4" title={getTitleHover(item)}>
           <UniversalLink item={item}>
