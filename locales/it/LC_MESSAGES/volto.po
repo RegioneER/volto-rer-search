@@ -319,7 +319,7 @@ msgstr ""
 msgid "searchresult_similar_results"
 msgstr ""
 
-#. Default: "Filtra i contenuti con filtri specifici per questo gruppo"
+#. Default: "Filtri specifici per {group}"
 #: components/Search/Facets/SpecificFilters
 msgid "searchsite_advanced_filters"
 msgstr ""
