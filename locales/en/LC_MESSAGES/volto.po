@@ -319,10 +319,10 @@ msgstr "Participation deadline"
 msgid "searchresult_similar_results"
 msgstr "Similar results"
 
-#. Default: "Filtra i contenuti con filtri specifici per questo gruppo"
+#. Default: "Filtri specifici per {group}"
 #: components/Search/Facets/SpecificFilters
 msgid "searchsite_advanced_filters"
-msgstr "Filter content with filters specific to this group"
+msgstr "Specific filters for {group}"
 
 #. Default: "In tutti i siti della Regione"
 #: components/Search/Facets/widgets/LocationWidget

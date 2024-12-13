@@ -15,7 +15,7 @@ import { getDateRangeFilterValue } from 'volto-rer-search/helpers';
 const messages = defineMessages({
   advanced_filters: {
     id: 'searchsite_advanced_filters',
-    defaultMessage: 'Filtra i contenuti con filtri specifici per questo gruppo',
+    defaultMessage: 'Filtri specifici per {group}',
   },
 });
 const SpecificFilters = ({ filters = {}, setFilters, moment: momentlib }) => {
@@ -23,15 +23,21 @@ const SpecificFilters = ({ filters = {}, setFilters, moment: momentlib }) => {
   const moment = momentlib.default;
   moment.locale(intl.locale);
 
-  const advanced_filters = useSelector((state) => {
+  const advanced_filters_settings = useSelector((state) => {
     if (filters.group) {
       return state.rer_search?.result?.facets
         ?.filter((f) => f.index === 'group')?.[0]
-        ?.items?.filter((i) => i.id == filters.group)?.[0]?.advanced_filters;
+        ?.items?.filter((i) => i.id == filters.group)?.[0];
     }
     return [];
   });
+  const currentLang = useSelector((state) => state.intl.locale);
 
+  const advanced_filters = advanced_filters_settings?.advanced_filters;
+  let advancedFiltersLabel = advanced_filters_settings?.label
+    ? advanced_filters_settings?.label[currentLang]
+    : '';
+  advancedFiltersLabel = advancedFiltersLabel.replace(/\(\d+\)/g, '');
   const onChangeField = (field, value) => {
     setFilters({ ...filters, [field]: value });
   };
@@ -40,7 +46,9 @@ const SpecificFilters = ({ filters = {}, setFilters, moment: momentlib }) => {
       <Col>
         <div className="advanced-filters p-3 bg-light">
           <div className="title mb-5">
-            {intl.formatMessage(messages.advanced_filters)}
+            {intl.formatMessage(messages.advanced_filters, {
+              group: advancedFiltersLabel,
+            })}
           </div>
           <Row>
             {advanced_filters.map((f) => {
