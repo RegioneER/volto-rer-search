@@ -39,6 +39,13 @@
   .card-title {
     font-weight: 600;
     font-size: 1.2rem;
+
+    a.with-external-link-icon {
+      display: inline;
+      .external-link.align-sub {
+        vertical-align: baseline;
+      }
+    }
   }
   .item-themes,
   .item-categories {
