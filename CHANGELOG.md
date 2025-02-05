@@ -1,5 +1,12 @@
 
 
+## [0.1.1](https://github.com/RegioneER/volto-rer-search/compare/v0.1.0...v0.1.1) (2025-02-05)
+
+
+### Bug Fixes
+
+* styles for external links in search results ([2b95147](https://github.com/RegioneER/volto-rer-search/commit/2b95147b6b81578af85a7e26f2e4efbe52fcac9e))
+
 ## 0.1.0 (2025-02-04)
 
 
