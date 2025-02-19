@@ -1,5 +1,12 @@
 
 
+## [0.1.2](https://github.com/RegioneER/volto-rer-search/compare/v0.1.1...v0.1.2) (2025-02-19)
+
+
+### Bug Fixes
+
+* remove categories in search results and fix sort_order ([#3](https://github.com/RegioneER/volto-rer-search/issues/3)) ([5c59cd1](https://github.com/RegioneER/volto-rer-search/commit/5c59cd1efd7dec5952e24898a4c37780644429d8))
+
 ## [0.1.1](https://github.com/RegioneER/volto-rer-search/compare/v0.1.0...v0.1.1) (2025-02-05)
 
 
