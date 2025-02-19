@@ -110,7 +110,8 @@ const SORT_BY_SORTABLETITLE = 'sortable_title';
 const SORTING_OPTIONS = {
   [SORT_BY_RELEVANCE]: {},
   [SORT_BY_DATE]: {
-    sort_on: 'Date',
+    sort_on: 'effective',
+    sort_order: 'reverse',
   },
   [SORT_BY_SORTABLETITLE]: {
     sort_on: 'sortable_title',

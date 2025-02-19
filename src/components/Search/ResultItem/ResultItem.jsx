@@ -225,31 +225,6 @@ const ResultItem = ({ item, searchableText, baseUrl, filters }) => {
                         ))}
                       </div>
                     )}
-                    {item.Subject && item.Subject.length > 0 && (
-                      <div className="item-categories">
-                        <Icon icon="tags" />
-                        {item.Subject.map((cat) => {
-                          const searchUrlCat = getSearchParamsURL({
-                            baseUrl,
-                            filters: {
-                              path: filters.path,
-                              Subject: [cat],
-                            },
-                          });
-                          return (
-                            <UniversalLink
-                              href={searchUrlCat}
-                              onClick={() => {
-                                window.location.href = searchUrlCat;
-                              }}
-                              key={cat}
-                            >
-                              {cat}
-                            </UniversalLink>
-                          );
-                        })}
-                      </div>
-                    )}
                   </div>
                 )}
               </>
