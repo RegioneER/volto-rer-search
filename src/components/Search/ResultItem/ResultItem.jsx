@@ -42,6 +42,9 @@ const messages = defineMessages({
 });
 
 const Marker = ({ text = '', highlight = '' }) => {
+  if (!text) {
+    return '';
+  }
   if (!highlight.trim()) {
     return text;
   }
@@ -132,7 +135,7 @@ const ResultItem = ({ item, searchableText, baseUrl, filters }) => {
 
     return title_parts.length > 0 ? title_parts.join(' - ') : '';
   };
-
+  const description = (item.Description ?? item.description) || '';
   return (
     <Card
       noWrapper={true}
@@ -169,7 +172,7 @@ const ResultItem = ({ item, searchableText, baseUrl, filters }) => {
         <p className="text-paragraph">
           <Marker
             highlight={searchableText}
-            text={item.Description ?? item.description}
+            text={description && description.length > 0 ? description : ''}
           />
         </p>
         {hasSimilarResults && (
