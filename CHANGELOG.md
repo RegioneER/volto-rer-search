@@ -1,5 +1,12 @@
 
 
+## [0.1.3](https://github.com/RegioneER/volto-rer-search/compare/v0.1.2...v0.1.3) (2025-04-04)
+
+
+### Bug Fixes
+
+* improve checks on Marker highlight ([#4](https://github.com/RegioneER/volto-rer-search/issues/4)) ([dd968fa](https://github.com/RegioneER/volto-rer-search/commit/dd968fa06c063889d9e18170a9d783c4e20af423))
+
 ## [0.1.2](https://github.com/RegioneER/volto-rer-search/compare/v0.1.1...v0.1.2) (2025-02-19)
 
 
