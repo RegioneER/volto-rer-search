@@ -173,7 +173,7 @@ const ResultItem = ({ item, searchableText, baseUrl, filters }) => {
         <p className="text-paragraph">
           <Marker
             highlight={searchableText}
-            text={description && description.length > 0 ? description : ''}
+            text={description}
           />
         </p>
         {hasSimilarResults && (
