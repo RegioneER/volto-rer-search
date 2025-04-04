@@ -135,7 +135,8 @@ const ResultItem = ({ item, searchableText, baseUrl, filters }) => {
 
     return title_parts.length > 0 ? title_parts.join(' - ') : '';
   };
-  const description = (item.Description ?? item.description) || '';
+  const description = (item.Description ?? item.description) ?? '';
+  
   return (
     <Card
       noWrapper={true}
