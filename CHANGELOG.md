@@ -1,5 +1,12 @@
 
 
+## [0.1.4](https://github.com/RegioneER/volto-rer-search/compare/v0.1.3...v0.1.4) (2025-04-08)
+
+
+### Bug Fixes
+
+* handle empty ElevateWidget value ([3560259](https://github.com/RegioneER/volto-rer-search/commit/3560259e8552bf21248769c6e8e1bd7fa7a7f7da))
+
 ## [0.1.3](https://github.com/RegioneER/volto-rer-search/compare/v0.1.2...v0.1.3) (2025-04-04)
 
 
