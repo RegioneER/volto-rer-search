@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { defineMessages, useIntl } from 'react-intl';
 import { Icon, Grid, Menu, Form, Button, Segment } from 'semantic-ui-react';
 
@@ -57,7 +56,9 @@ const TypesGroupingWidget = ({
   description,
 }) => {
   const intl = useIntl();
-  const [elevate, setElevate] = useState(JSON.parse(value) ?? [defaultItem]); //ToDo: usare value
+  const [elevate, setElevate] = useState(
+    value ? JSON.parse(value) : [defaultItem],
+  ); //ToDo: usare value
   const [activeItem, setActiveItem] = useState(0);
   usePreventClick('.elevate-widget .ui.vertical.menu');
 
