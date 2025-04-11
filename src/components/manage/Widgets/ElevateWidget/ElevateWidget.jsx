@@ -79,6 +79,10 @@ const TypesGroupingWidget = ({
     let new_conf = [...elevate];
     new_conf.splice(index, 1);
 
+    if (new_conf.length === 0) {
+      new_conf = [defaultItem];
+    }
+
     if (activeItem === index) {
       setTimeout(() => setActiveItem(index > 0 ? index - 1 : 0), 0);
     }
