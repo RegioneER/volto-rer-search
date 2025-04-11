@@ -1,5 +1,12 @@
 
 
+## [0.1.5](https://github.com/RegioneER/volto-rer-search/compare/v0.1.4...v0.1.5) (2025-04-11)
+
+
+### Bug Fixes
+
+* no empty settings when remove ([c1cfd59](https://github.com/RegioneER/volto-rer-search/commit/c1cfd592257f7cbb173256cedee96699d11b7ef9))
+
 ## [0.1.4](https://github.com/RegioneER/volto-rer-search/compare/v0.1.3...v0.1.4) (2025-04-08)
 
 
