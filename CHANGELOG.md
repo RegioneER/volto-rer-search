@@ -1,5 +1,12 @@
 
 
+## [0.2.0](https://github.com/RegioneER/volto-rer-search/compare/v0.1.5...v0.2.0) (2025-05-13)
+
+
+### Features
+
+* handle empty configuration in elevate widget ([76857bc](https://github.com/RegioneER/volto-rer-search/commit/76857bc3149075de2b5787643d3eef4f67665724))
+
 ## [0.1.5](https://github.com/RegioneER/volto-rer-search/compare/v0.1.4...v0.1.5) (2025-04-11)
 
 
