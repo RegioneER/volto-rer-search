@@ -1,3 +1,10 @@
+.elevate-widget .no-config {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
 .elevate-widget .ui.menu.elevate-settings-menu .item,
 .cms-ui .elevate-widget .ui.menu.elevate-settings-menu .item {
   display: flex;
@@ -21,20 +28,12 @@
 }
 
 .elevate-widget .ui.menu.elevate-settings-menu .item button.ui.button,
-.cms-ui
-  .elevate-widget
-  .ui.menu.elevate-settings-menu
-  .item
-  button.ui.button {
+.cms-ui .elevate-widget .ui.menu.elevate-settings-menu .item button.ui.button {
   padding: 0.5rem;
   text-align: center;
 }
 
-.elevate-widget
-  .ui.menu.elevate-settings-menu
-  .item
-  button.ui.button
-  i.icon,
+.elevate-widget .ui.menu.elevate-settings-menu .item button.ui.button i.icon,
 .cms-ui
   .elevate-widget
   .ui.menu.elevate-settings-menu

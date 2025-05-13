@@ -32,6 +32,10 @@ const messages = defineMessages({
     id: 'elevate-widget_addItem',
     defaultMessage: 'Aggiungi un gruppo',
   },
+  addConfiguration: {
+    id: 'elevate-widget_addConfiguration',
+    defaultMessage: 'Aggiungi una configurazione',
+  },
   group_content: {
     id: 'elevate-widget_group_content',
     defaultMessage: 'Contenuto del gruppo',
@@ -79,9 +83,9 @@ const TypesGroupingWidget = ({
     let new_conf = [...elevate];
     new_conf.splice(index, 1);
 
-    if (new_conf.length === 0) {
-      new_conf = [defaultItem];
-    }
+    // if (new_conf.length === 0) {
+    //   new_conf = [defaultItem];
+    // }
 
     if (activeItem === index) {
       setTimeout(() => setActiveItem(index > 0 ? index - 1 : 0), 0);
@@ -231,9 +235,21 @@ const TypesGroupingWidget = ({
                       </Grid.Column>
                     </Grid>
                   ) : (
-                    <span>
-                      {intl.formatMessage(messages.no_elevate_settings)}
-                    </span>
+                    <div className="text-center no-config">
+                      <div>
+                        {intl.formatMessage(messages.no_elevate_settings)}
+                      </div>
+
+                      <Button
+                        aria-label={intl.formatMessage(
+                          messages.addConfiguration,
+                        )}
+                        onClick={(e) => addItem(e)}
+                      >
+                        <Icon name="plus" />{' '}
+                        {intl.formatMessage(messages.addConfiguration)}
+                      </Button>
+                    </div>
                   )}
                 </Segment>
               </div>
