@@ -35,7 +35,7 @@ const SelectWidget = ({
   }
   return items?.length > 0 ? (
     <div className="search-select-wrapper">
-      {/* {index === 'Subject' && (  */}
+      {index === 'Subject' && ( 
         <span className="label-icon">
           <Icon
             icon="tags"
@@ -46,7 +46,7 @@ const SelectWidget = ({
             aria-hidden="true"
           />
         </span>
-      {/* )} */}
+      )}
       <SelectInput
         id={`select-${index}`}
         value={selectValue}
