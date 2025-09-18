@@ -81,6 +81,7 @@ const SpecificFilters = ({ filters = {}, setFilters, moment: momentlib }) => {
                     f.type === 'FieldIndex' ||
                     f.type === 'BooleanIndex') && (
                     <>
+                    {console.log('risultati', f)}
                       <SelectWidget
                         {...f}
                         multivalued={
