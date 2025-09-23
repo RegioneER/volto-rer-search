@@ -1,0 +1,14 @@
+.search-select-wrapper {
+    .label-icon {
+            vertical-align: 0.2rem;
+    }
+
+    &:has(.label-icon) {
+        margin-top: -1rem;
+    }
+
+    &:has(.label-icon) .bootstrap-select-wrapper label {
+        padding-left: 1.3rem;
+        padding-bottom: 0.5rem;
+    }
+}
