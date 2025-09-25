@@ -1,5 +1,12 @@
 
 
+## [0.2.1](https://github.com/RegioneER/volto-rer-search/compare/v0.2.0...v0.2.1) (2025-09-25)
+
+
+### Bug Fixes
+
+* fixed a11y select input label ([#5](https://github.com/RegioneER/volto-rer-search/issues/5)) ([31abc32](https://github.com/RegioneER/volto-rer-search/commit/31abc32c5083d110d2cb0522fae4c23f56809a48))
+
 ## [0.2.0](https://github.com/RegioneER/volto-rer-search/compare/v0.1.5...v0.2.0) (2025-05-13)
 
 
