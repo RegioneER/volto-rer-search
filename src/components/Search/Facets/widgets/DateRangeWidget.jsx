@@ -301,7 +301,7 @@ const DateRangeWidget = (props) => {
           customCloseIcon={
             <Icon
               icon="it-close"
-              color="red"
+              color="primary"
               title={intl.formatMessage(messages.clearDates)}
             />
           }
