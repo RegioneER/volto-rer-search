@@ -4,6 +4,7 @@ import cx from 'classnames';
 import moment from 'moment';
 import { Card, CardBody, CardTitle } from 'design-react-kit';
 import { UniversalLink } from '@plone/volto/components';
+import config from '@plone/volto/registry';
 
 import {
   Icon,
@@ -135,8 +136,11 @@ const ResultItem = ({ item, searchableText, baseUrl, filters }) => {
 
     return title_parts.length > 0 ? title_parts.join(' - ') : '';
   };
-  const description = (item.Description ?? item.description) ?? '';
-  
+  const description = item.Description ?? item.description ?? '';
+
+  const additionalRenderers =
+    config.settings['volto-rer-search'].resultItemAdditionalRenderers || {};
+  const AdditionalRenderer = additionalRenderers[item['@type']];
   return (
     <Card
       noWrapper={true}
@@ -171,10 +175,7 @@ const ResultItem = ({ item, searchableText, baseUrl, filters }) => {
           </UniversalLink>
         </CardTitle>
         <p className="text-paragraph">
-          <Marker
-            highlight={searchableText}
-            text={description}
-          />
+          <Marker highlight={searchableText} text={description} />
         </p>
         {hasSimilarResults && (
           <a
@@ -238,6 +239,7 @@ const ResultItem = ({ item, searchableText, baseUrl, filters }) => {
         {item.additional_html && (
           <div dangerouslySetInnerHTML={{ __html: item.additional_html }} />
         )}
+        {AdditionalRenderer && <AdditionalRenderer content={item} />}
       </CardBody>
     </Card>
   );

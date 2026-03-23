@@ -7,7 +7,6 @@ import {
   GroupsWidget,
   SelectWidget,
   LocationWidget,
-  DatetimeWidget,
   BooleanWidget,
   DateRangeWidget,
 } from 'volto-rer-search/components/Search';
@@ -19,7 +18,6 @@ const Facets = ({
   filters = {},
   setFilters,
   setCurrentPage,
-  path,
   moment: momentlib,
 }) => {
   const intl = useIntl();
@@ -70,20 +68,10 @@ const Facets = ({
               value={filters[f.index]}
             />
           )}
-          {f.type === 'DateIndex' && (
-            <DatetimeWidget
-              {...f}
-              onChange={onChangeField}
-              value={filters[f.index]}
-              dateOnly={true}
-            />
-          )}
-          {f.type === 'DateRangeIndex' && (
+          {(f.type === 'DateRangeIndex' || f.type === 'DateIndex') && (
             <DateRangeWidget
               {...f}
-              onChange={(f) => {
-                setFilters({ ...filters, ...f });
-              }}
+              onChange={onChangeField}
               value={getDateRangeFilterValue(filters, f, moment)}
               dateOnly={true}
             />

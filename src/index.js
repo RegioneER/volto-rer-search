@@ -27,6 +27,7 @@ const applyConfig = (config) => {
       ['newspaper', 'Newspaper'],
       ['tag', 'Tag'],
     ],
+    resultItemAdditionalRenderers: {},
   };
   // config.registerComponent({
   //   name: 'SiteSettingsExtras',

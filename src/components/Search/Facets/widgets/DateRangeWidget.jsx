@@ -189,8 +189,6 @@ const DateRangeWidget = (props) => {
     defaultEnd,
     label_start,
     label_end,
-    index_start,
-    index_end,
     moment: momentlib,
     ...rest
   } = props;
@@ -248,57 +246,24 @@ const DateRangeWidget = (props) => {
 
     let v = {};
 
-    //se vengono passati due indici diversi per i campi di start e di end
-    if (index_start || index_end) {
-      if (start) {
-        v[index_start] = {
-          range: 'min',
-          query: start,
-        };
-        // if (end) {
-        //   v[index_start] = {
-        //     range: 'min:max',
-        //     query: [start, end],
-        //   };
-        // }
-      }
-
-      if (end) {
-        v[index_end] = {
-          range: 'max',
-          query: end,
-        };
-        // if (start) {
-        //   v[index_end] = {
-        //     range: 'min:max',
-        //     query: [start, end],
-        //   };
-        // }
-      }
+    if (start && end) {
+      v = {
+        range: 'min:max',
+        query: [start, end],
+      };
+    } else if (start) {
+      v = {
+        range: 'min',
+        query: start,
+      };
+    } else if (end) {
+      v = {
+        range: 'max',
+        query: end,
+      };
     }
-    //se viene passato un solo indice su cui fare la ricerca
-    else if (index) {
-      if (start && end) {
-        v[index] = {
-          range: 'min:max',
-          query: [start, end],
-        };
-      } else if (start) {
-        v[index] = {
-          range: 'min',
-          query: start,
-        };
-      } else if (end) {
-        v[index] = {
-          range: 'max',
-          query: end,
-        };
-      }
-    }
-
-    onChange(v);
+    onChange(index, v);
   };
-
   return (
     <fieldset className="filter-daterange">
       {label?.[intl.locale] && <label>{label[intl.locale]}</label>}
@@ -336,7 +301,7 @@ const DateRangeWidget = (props) => {
           customCloseIcon={
             <Icon
               icon="it-close"
-              color="white"
+              color="primary"
               title={intl.formatMessage(messages.clearDates)}
             />
           }
