@@ -207,178 +207,177 @@ const Search = () => {
   return (
     <>
       <Helmet title={intl.formatMessage(messages.searchResults)} />
-
-      <div className="public-ui search-view">
-        <Container className="px-4 my-4">
-          <Row>
-            <Col>
-              <Row>
-                <Col className="pb-3 pb-lg-5">
-                  <h1>{intl.formatMessage(messages.searchResults)}</h1>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <TextInput
-                    id="searchableText"
-                    label={intl.formatMessage(messages.searchSite)}
-                    value={searchableText}
-                    onChange={(id, value) => {
-                      setSearchableText(value);
-                    }}
-                    size="lg"
-                    append={
-                      <Button
-                        icon
-                        tag="button"
-                        color="link"
-                        size="xs"
-                        className="rounded-0 py-0"
-                        onClick={doSearch}
-                        aria-label={intl.formatMessage(messages.search)}
-                      >
-                        <Icon
-                          color=""
-                          icon="it-search"
-                          padding={false}
-                          size="lg"
-                        />
-                      </Button>
-                    }
-                    aria-controls="search-results-region"
-                  />
-                </Col>
-              </Row>
-
-              <Skiplink tag="div">
-                <SkiplinkItem href="#search-results-region" tag="a">
-                  {intl.formatMessage(messages.skipToSearchResults)}
-                </SkiplinkItem>
-              </Skiplink>
-
-              {/* Toggle filtri su mobile */}
-              {(searchResults?.result?.facets?.length > 0 ||
-                searchResults?.result?.path_infos) && (
-                <div className="d-block d-lg-none d-xl-none">
-                  <div className="row pb-3">
-                    <div className="col-6">
-                      {searchResults?.result?.items_total > 0 && (
-                        <small aria-live="polite">
-                          {intl.formatMessage(messages.foundNResults, {
-                            total: searchResults.result.items_total,
-                          })}
-                        </small>
-                      )}
-                    </div>
-                    <div className="col-6 align-self-center">
-                      <div className="float-end">
-                        <a
-                          onClick={() => setCollapseFilters((prev) => !prev)}
-                          href="#categoryCollapse"
-                          role="button"
-                          className={cx('btn btn-sm fw-bold text-uppercase', {
-                            'btn-outline-primary': collapseFilters,
-                            'btn-primary': !collapseFilters,
-                          })}
-                          data-toggle="collapse"
-                          aria-expanded={!collapseFilters}
-                          aria-controls="categoryCollapse"
+      <div id="view">
+        <div id="page-document" className="public-ui search-view">
+          <Container className="px-4 my-4">
+            <Row>
+              <Col>
+                <Row>
+                  <Col className="pb-3 pb-lg-5">
+                    <h1>{intl.formatMessage(messages.searchResults)}</h1>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <TextInput
+                      id="searchableText"
+                      label={intl.formatMessage(messages.searchSite)}
+                      value={searchableText}
+                      onChange={(id, value) => {
+                        setSearchableText(value);
+                      }}
+                      size="lg"
+                      append={
+                        <Button
+                          icon
+                          tag="button"
+                          color="link"
+                          size="xs"
+                          className="rounded-0 py-0"
+                          onClick={doSearch}
+                          aria-label={intl.formatMessage(messages.search)}
                         >
-                          {intl.formatMessage(messages.filtersCollapse)}
-                        </a>
+                          <Icon
+                            color=""
+                            icon="it-search"
+                            padding={false}
+                            size="lg"
+                          />
+                        </Button>
+                      }
+                      aria-controls="search-results-region"
+                    />
+                  </Col>
+                </Row>
+
+                <Skiplink tag="div">
+                  <SkiplinkItem href="#search-results-items" tag="a">
+                    {intl.formatMessage(messages.skipToSearchResults)}
+                  </SkiplinkItem>
+                </Skiplink>
+
+                {/* Toggle filtri su mobile */}
+                {(searchResults?.result?.facets?.length > 0 ||
+                  searchResults?.result?.path_infos) && (
+                  <div className="d-block d-lg-none d-xl-none">
+                    <div className="row pb-3">
+                      <div className="col-6">
+                        {searchResults?.result?.items_total > 0 && (
+                          <small aria-live="polite">
+                            {intl.formatMessage(messages.foundNResults, {
+                              total: searchResults.result.items_total,
+                            })}
+                          </small>
+                        )}
+                      </div>
+                      <div className="col-6 align-self-center">
+                        <div className="float-end">
+                          <a
+                            onClick={() => setCollapseFilters((prev) => !prev)}
+                            href="#categoryCollapse"
+                            role="button"
+                            className={cx('btn btn-sm fw-bold text-uppercase', {
+                              'btn-outline-primary': collapseFilters,
+                              'btn-primary': !collapseFilters,
+                            })}
+                            data-toggle="collapse"
+                            aria-expanded={!collapseFilters}
+                            aria-controls="categoryCollapse"
+                          >
+                            {intl.formatMessage(messages.filtersCollapse)}
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
-              {/* ------- fine Toggle filtri su mobile ------- */}
-            </Col>
-          </Row>
-          <Row>
-            <aside className="col-lg-3 py-lg-5 pe-lg-4">
-              <div className="pe-4"></div>
-              <Collapse
-                isOpen={!collapseFilters}
-                className="d-lg-block d-xl-block"
-                id="categoryCollapse"
-              >
-                <Facets
-                  filters={filters}
-                  setFilters={setFilters}
-                  setCurrentPage={setCurrentPage}
-                />
-              </Collapse>
-            </aside>
-
-            {/* Risultati della ricerca - colonna di destra */}
-            <Col lg={9} tag="section" className="py-lg-5">
-              <div
-                className="search-results-wrapper"
-                id="search-results-region"
-                aria-live="polite"
-              >
-                {searchResults.loadingResults ||
-                (!searchResults.hasError && isEmpty(searchResults.result)) ? (
-                  <div className="searchSpinnerWrapper">
-                    <Spinner active />
-                  </div>
-                ) : (
-                  <>
-                    <SpecificFilters
-                      filters={filters}
-                      setFilters={setFilters}
-                    />
-                    {searchResults?.result?.items_total > 0 ? (
-                      <>
-                        <OrderingWidget
-                          sortOn={sortOn}
-                          setSortOn={setSortOn}
-                          options={SORTING_OPTIONS}
-                          total={searchResults?.result?.items_total}
-                        />
-
-                        <Row>
-                          {searchResults?.result?.items?.map((item) => (
-                            <Col md={12} key={item['@id']} className="p-0">
-                              <ResultItem
-                                item={item}
-                                searchableText={searchableText}
-                                baseUrl={baseUrl}
-                                filters={filters}
-                              />
-                            </Col>
-                          ))}
-                        </Row>
-                        {searchResults?.result?.batching && (
-                          <Pagination
-                            activePage={currentPage}
-                            totalPages={Math.ceil(
-                              (searchResults?.result?.items_total ?? 0) /
-                                config.settings.defaultPageSize,
-                            )}
-                            onPageChange={handleQueryPaginationChange}
-                          />
-                        )}
-                      </>
-                    ) : searchResults.error ? (
-                      <Alert color="danger">
-                        <strong>
-                          {intl.formatMessage(messages.attenzione)}
-                        </strong>{' '}
-                        {intl.formatMessage(messages.errors_occured)}
-                      </Alert>
-                    ) : (
-                      !searchResults?.hasError &&
-                      searchResults?.result?.items_total === 0 && (
-                        <p>{intl.formatMessage(messages.no_results)}</p>
-                      )
-                    )}
-                  </>
                 )}
-              </div>
-            </Col>
-          </Row>
-        </Container>
+                {/* ------- fine Toggle filtri su mobile ------- */}
+              </Col>
+            </Row>
+            <Row>
+              <aside className="col-lg-3 py-lg-5 pe-lg-4">
+                <div className="pe-4"></div>
+                <Collapse
+                  isOpen={!collapseFilters}
+                  className="d-lg-block d-xl-block"
+                  id="categoryCollapse"
+                >
+                  <Facets
+                    filters={filters}
+                    setFilters={setFilters}
+                    setCurrentPage={setCurrentPage}
+                  />
+                </Collapse>
+              </aside>
+
+              {/* Risultati della ricerca - colonna di destra */}
+              <Col lg={9} tag="section" className="py-lg-5">
+                <div className="search-results-wrapper">
+                  {searchResults.loadingResults ||
+                  (!searchResults.hasError && isEmpty(searchResults.result)) ? (
+                    <div className="searchSpinnerWrapper">
+                      <Spinner active />
+                    </div>
+                  ) : (
+                    <div id="search-results-region" aria-live="polite">
+                      <SpecificFilters
+                        filters={filters}
+                        setFilters={setFilters}
+                      />
+                      <div id="search-results-items">
+                        {searchResults?.result?.items_total > 0 ? (
+                          <>
+                            <OrderingWidget
+                              sortOn={sortOn}
+                              setSortOn={setSortOn}
+                              options={SORTING_OPTIONS}
+                              total={searchResults?.result?.items_total}
+                            />
+
+                            <Row>
+                              {searchResults?.result?.items?.map((item) => (
+                                <Col md={12} key={item['@id']} className="p-0">
+                                  <ResultItem
+                                    item={item}
+                                    searchableText={searchableText}
+                                    baseUrl={baseUrl}
+                                    filters={filters}
+                                  />
+                                </Col>
+                              ))}
+                            </Row>
+                            {searchResults?.result?.batching && (
+                              <Pagination
+                                activePage={currentPage}
+                                totalPages={Math.ceil(
+                                  (searchResults?.result?.items_total ?? 0) /
+                                    config.settings.defaultPageSize,
+                                )}
+                                onPageChange={handleQueryPaginationChange}
+                              />
+                            )}
+                          </>
+                        ) : searchResults.error ? (
+                          <Alert color="danger">
+                            <strong>
+                              {intl.formatMessage(messages.attenzione)}
+                            </strong>{' '}
+                            {intl.formatMessage(messages.errors_occured)}
+                          </Alert>
+                        ) : (
+                          !searchResults?.hasError &&
+                          searchResults?.result?.items_total === 0 && (
+                            <p>{intl.formatMessage(messages.no_results)}</p>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
       {/*force remove body class for subsite search pages*/}
       <BodyClass className="cms-ui" remove={true} />
