@@ -1,5 +1,12 @@
 
 
+## [0.3.0](https://github.com/RegioneER/volto-rer-search/compare/v0.2.2...v0.3.0) (2026-03-23)
+
+
+### Features
+
+* fix datewidget and added component to extend result items ([#6](https://github.com/RegioneER/volto-rer-search/issues/6)) ([9e5374f](https://github.com/RegioneER/volto-rer-search/commit/9e5374f392f435650a659a8ea8380023a1df1741))
+
 ## [0.2.2](https://github.com/RegioneER/volto-rer-search/compare/v0.2.1...v0.2.2) (2026-03-23)
 
 
