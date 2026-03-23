@@ -1,5 +1,12 @@
 
 
+## [0.2.2](https://github.com/RegioneER/volto-rer-search/compare/v0.2.1...v0.2.2) (2026-03-23)
+
+
+### Bug Fixes
+
+* a11y search results ([515cc7e](https://github.com/RegioneER/volto-rer-search/commit/515cc7e079b4011d483dd1c85aeeaf60cf7b4996))
+
 ## [0.2.1](https://github.com/RegioneER/volto-rer-search/compare/v0.2.0...v0.2.1) (2025-09-25)
 
 
