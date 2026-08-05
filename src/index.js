@@ -4,13 +4,22 @@ import {
   TypesGroupingWidget,
   AvailableIndexesWidget,
   ElevateWidget,
+  RerSearch,
 } from 'volto-rer-search/components';
+import BaseSearch from 'design-comuni-plone-theme/components/ItaliaTheme/Search/Search';
 
 import { rerSearch } from 'volto-rer-search/actions';
 
 import { rerSearchReducer } from 'volto-rer-search/reducers';
 
 const applyConfig = (config) => {
+  // la ricerca "base" di design-comuni-plone-theme viene servita su /search-base,
+  // dato che /search è occupato dalla ricerca Solr di questo addon
+  config.settings.search = {
+    ...(config.settings.search ?? {}),
+    baseUrl: '/search-base',
+  };
+
   config.settings['volto-rer-search'] = {
     ...(config.settings['volto-rer-search'] ?? {}),
     // siteSearch: {
@@ -45,6 +54,20 @@ const applyConfig = (config) => {
     ...config.addonReducers,
     rer_search: rerSearchReducer,
   };
+
+  // ROUTES
+  // /search viene servita dalla ricerca Solr di questo addon, con le stesse
+  // regole già registrate da design-comuni-plone-theme (funziona sotto qualsiasi path)
+  config.addonRoutes = (config.addonRoutes ?? []).map((route) =>
+    route.path === '/**/search'
+      ? { ...route, path: ['/search', '/**/search'], component: RerSearch }
+      : route,
+  );
+  config.addonRoutes.push({
+    path: ['/search-base', '/**/search-base'],
+    component: BaseSearch,
+  });
+
   return config;
 };
 
