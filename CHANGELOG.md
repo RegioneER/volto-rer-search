@@ -1,5 +1,7 @@
 
 
+## [0.4.0](https://github.com/RegioneER/volto-rer-search/compare/v0.4.0-alpha.0...v0.4.0) (2026-09-23)
+
 ## [0.4.0-alpha.0](https://github.com/RegioneER/volto-rer-search/compare/v0.3.0...v0.4.0-alpha.0) (2026-08-25)
 
 
