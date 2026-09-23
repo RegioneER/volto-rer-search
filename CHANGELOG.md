@@ -1,5 +1,12 @@
 
 
+## [0.4.0-alpha.0](https://github.com/RegioneER/volto-rer-search/compare/v0.3.0...v0.4.0-alpha.0) (2026-08-25)
+
+
+### Features
+
+* add /search-base route to the base design-comuni-plone-theme search ([f5106e6](https://github.com/RegioneER/volto-rer-search/commit/f5106e68c142b3aca76390942452b7bea6c487fb))
+
 ## [0.3.0](https://github.com/RegioneER/volto-rer-search/compare/v0.2.2...v0.3.0) (2026-03-23)
 
 
