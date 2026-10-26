@@ -2,6 +2,8 @@
 /*
 CUSTOMIZATIONS:
 - rimossi i vari tab di ricerca
+- the modal keeps the site lang/dir: it is rendered in <body>, which on pages
+  in another language (e.g. Arabic, rtl) gets the content lang/dir
 */
 import React, { useState, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -35,6 +37,7 @@ import {
 } from 'design-react-kit';
 
 import { Icon } from 'design-comuni-plone-theme/components/ItaliaTheme';
+import { useSiteLanguage } from 'design-comuni-plone-theme/helpers/contentLanguage';
 import SearchUtils from 'volto-rer-search/components/Search/utils';
 
 const { getSearchParamsURL, getBaseUrl } = SearchUtils;
@@ -56,6 +59,7 @@ const messages = defineMessages({
 
 const SearchModal = ({ closeModal, show }) => {
   const intl = useIntl();
+  const siteLanguage = useSiteLanguage();
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -105,6 +109,8 @@ const SearchModal = ({ closeModal, show }) => {
     <Modal
       wrapClassName="public-ui"
       id="search-modal"
+      lang={siteLanguage.lang}
+      dir={siteLanguage.dir}
       isOpen={show}
       toggle={closeModal}
     >
