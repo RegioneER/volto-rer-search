@@ -5,12 +5,15 @@ import {
   AvailableIndexesWidget,
   ElevateWidget,
   RerSearch,
+  SearchBase,
 } from 'volto-rer-search/components';
-import BaseSearch from 'design-comuni-plone-theme/components/ItaliaTheme/Search/Search';
 
 import { rerSearch } from 'volto-rer-search/actions';
 
-import { rerSearchReducer } from 'volto-rer-search/reducers';
+import {
+  rerSearchReducer,
+  searchBaseFiltersReducer,
+} from 'volto-rer-search/reducers';
 
 const applyConfig = (config) => {
   // la ricerca "base" di design-comuni-plone-theme viene servita su /search-base,
@@ -53,6 +56,7 @@ const applyConfig = (config) => {
   config.addonReducers = {
     ...config.addonReducers,
     rer_search: rerSearchReducer,
+    searchBaseFilters: searchBaseFiltersReducer,
   };
 
   // ROUTES
@@ -63,9 +67,10 @@ const applyConfig = (config) => {
       ? { ...route, path: ['/search', '/**/search'], component: RerSearch }
       : route,
   );
+  // /search-base: dcpt search over every content type, with its own filters
   config.addonRoutes.push({
     path: ['/search-base', '/**/search-base'],
-    component: BaseSearch,
+    component: SearchBase,
   });
 
   return config;
