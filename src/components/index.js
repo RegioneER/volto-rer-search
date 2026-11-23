@@ -23,3 +23,9 @@ export const RerSearch = loadable(() =>
     /* webpackChunkName: "RERSearch" */ 'volto-rer-search/components/Search/Search'
   ),
 );
+
+export const SearchBase = loadable(() =>
+  import(
+    /* webpackChunkName: "RERSearchBase" */ 'volto-rer-search/components/SearchBase/SearchBase'
+  ),
+);
