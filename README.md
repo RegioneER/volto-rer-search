@@ -23,7 +23,7 @@ This project uses the conventional changelog specification (see [COMMITLINT.md](
 
 ## License
 
-This product is licensed under the [MIT License](./LICENSE).
+This product is licensed under the [GNU GENERAL PUBLIC LICENSE Version 2](./LICENSE).
 
 ## Authors
 
